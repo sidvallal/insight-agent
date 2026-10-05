@@ -2,3 +2,7 @@ pandas
 sqlalchemy
 psycopg2-binary
 python-dotenv   
+langchain-groq
+chromadb
+sentence-transformers
+huggingface_hub
