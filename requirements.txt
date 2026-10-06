@@ -1,8 +1,13 @@
-pandas
-sqlalchemy
-psycopg2-binary
-python-dotenv   
+# Core
+langgraph
 langchain-groq
 chromadb
-sentence-transformers
 huggingface_hub
+sqlalchemy
+psycopg2-binary
+pandas
+python-dotenv
+langchain-openai
+
+# Dev
+pytest

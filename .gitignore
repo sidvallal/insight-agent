@@ -1,4 +1,16 @@
+# environment
 .venv/
-__pycache__/
 .env
+
+# python
+__pycache__/
+*.pyc
+.pytest_cache/
+
+# generated / large files (rebuild with the scripts)
 data/*.csv
+data/chroma/
+
+# OS / editor
+.DS_Store
+.vscode/
