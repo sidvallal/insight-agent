@@ -2,7 +2,7 @@
 
 import pytest
 
-from src import db, llm
+from src import gateway, llm
 from src.graph.nodes import retrieve
 
 
@@ -56,7 +56,7 @@ def fake_db(monkeypatch):
                 raise outcome
             return outcome
 
-        monkeypatch.setattr(db, "run_query", run_query)
+        monkeypatch.setattr(gateway, "run_agent_query", run_query)
         return calls
 
     return install

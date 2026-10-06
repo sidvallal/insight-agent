@@ -20,7 +20,7 @@ import argparse
 import json
 import time
 
-from src import config, db, llm
+from src import config, db, gateway, llm
 from eval.compare import results_match
 
 PREVIEW_ROWS = 5
@@ -37,7 +37,7 @@ def build_runner(version: str):
         def run(question: str, qid: str) -> dict:
             sql = generate_sql(question, exclude_ids=[qid])
             try:
-                columns, rows = db.run_query(sql)
+                columns, rows = gateway.run_agent_query(sql)
                 error = ""
             except Exception as exc:
                 columns, rows, error = [], None, str(exc)

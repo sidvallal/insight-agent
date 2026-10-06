@@ -10,7 +10,7 @@ import pandas as pd
 from sqlalchemy import text
 
 from src import config
-from src.db import get_engine
+from src.db import get_admin_engine
 
 CSV_FILES = [
     "olist_customers_dataset.csv",
@@ -30,7 +30,7 @@ def main():
     parser.add_argument("--reset", action="store_true", help="truncate tables before loading")
     args = parser.parse_args()
 
-    engine = get_engine()
+    engine = get_admin_engine()
     tables = [name.removesuffix(".csv") for name in CSV_FILES]
 
     with engine.begin() as connection:

@@ -1,9 +1,10 @@
-"""Check the PostgreSQL connection.   python -m scripts.check_connection"""
+"""Check the PostgreSQL connections.   python -m scripts.check_connection"""
 
 from sqlalchemy import text
 
-from src.db import get_engine
+from src.db import get_admin_engine, get_engine
 
-with get_engine().connect() as connection:
-    print("Connected successfully!")
-    print(connection.execute(text("SELECT version()")).scalar())
+for label, engine in (("admin", get_admin_engine()), ("agent", get_engine())):
+    with engine.connect() as connection:
+        user = connection.execute(text("SELECT current_user")).scalar()
+        print(f"{label:6} connected as '{user}'")
