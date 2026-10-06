@@ -30,17 +30,40 @@ MAX_RETRIES = 3
 MAX_ROWS_TO_LLM = 20
 STATEMENT_TIMEOUT_MS = 30_000
 
+# Safety
+MAX_ROWS = 100_000            # hard cap on rows fetched per agent query
+MAX_SQL_LENGTH = 10_000
+ALLOWED_TABLES = frozenset({
+    "olist_customers_dataset",
+    "olist_geolocation_dataset",
+    "olist_orders_dataset",
+    "olist_order_items_dataset",
+    "olist_order_payments_dataset",
+    "olist_order_reviews_dataset",
+    "olist_products_dataset",
+    "olist_sellers_dataset",
+    "product_category_name_translation",
+})
+
+# How the agent reaches the database: "mcp" (through the MCP server) or "direct"
+DB_ACCESS = os.getenv("DB_ACCESS", "mcp").lower()
+
 # Approximate Groq pricing in USD per 1M tokens (check the current price list).
 PRICE_PER_M_INPUT = 0.15
 PRICE_PER_M_OUTPUT = 0.60
 
 
-def database_url() -> URL:
-    """Build the PostgreSQL URL (URL.create safely handles special characters)."""
+def database_url(readonly: bool = False) -> URL:
+    """Build the PostgreSQL URL (URL.create safely handles special characters).
+
+    readonly=True uses the restricted DB_RO_USER account when it is configured;
+    otherwise it falls back to the main account.
+    """
+    use_ro = readonly and os.getenv("DB_RO_USER")
     return URL.create(
         drivername="postgresql+psycopg2",
-        username=os.getenv("DB_USER"),
-        password=os.getenv("DB_PASSWORD"),
+        username=os.getenv("DB_RO_USER") if use_ro else os.getenv("DB_USER"),
+        password=os.getenv("DB_RO_PASSWORD") if use_ro else os.getenv("DB_PASSWORD"),
         host=os.getenv("DB_HOST", "localhost"),
         port=int(os.getenv("DB_PORT", "5432")),
         database=os.getenv("DB_NAME"),
