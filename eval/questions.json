@@ -1,302 +1,302 @@
 [
-    {
-        "id": "E001",
-        "difficulty": "easy",
-        "question": "How many orders are there in total?",
-        "gold_sql": "SELECT COUNT(*) AS total_orders FROM olist_orders_dataset;"
-    },
-    {
-        "id": "E002",
-        "difficulty": "easy",
-        "question": "How many unique customers are there?",
-        "gold_sql": "SELECT COUNT(DISTINCT customer_unique_id) AS unique_customers FROM olist_customers_dataset;"
-    },
-    {
-        "id": "E003",
-        "difficulty": "easy",
-        "question": "How many customers are registered in the database?",
-        "gold_sql": "SELECT COUNT(*) AS total_customers FROM olist_customers_dataset;"
-    },
-    {
-        "id": "E004",
-        "difficulty": "easy",
-        "question": "How many sellers are registered?",
-        "gold_sql": "SELECT COUNT(*) AS total_sellers FROM olist_sellers_dataset;"
-    },
-    {
-        "id": "E005",
-        "difficulty": "easy",
-        "question": "How many products are available in the products table?",
-        "gold_sql": "SELECT COUNT(*) AS total_products FROM olist_products_dataset;"
-    },
-    {
-        "id": "E006",
-        "difficulty": "easy",
-        "question": "How many orders have been delivered?",
-        "gold_sql": "SELECT COUNT(*) AS delivered_orders FROM olist_orders_dataset WHERE order_status = 'delivered';"
-    },
-    {
-        "id": "E007",
-        "difficulty": "easy",
-        "question": "How many orders have been canceled?",
-        "gold_sql": "SELECT COUNT(*) AS canceled_orders FROM olist_orders_dataset WHERE order_status = 'canceled';"
-    },
-    {
-        "id": "E008",
-        "difficulty": "easy",
-        "question": "What is the average review score?",
-        "gold_sql": "SELECT ROUND(AVG(review_score)::numeric, 2) AS average_review_score FROM olist_order_reviews_dataset;"
-    },
-    {
-        "id": "E009",
-        "difficulty": "easy",
-        "question": "What is the highest review score?",
-        "gold_sql": "SELECT MAX(review_score) AS highest_review_score FROM olist_order_reviews_dataset;"
-    },
-    {
-        "id": "E010",
-        "difficulty": "easy",
-        "question": "What is the lowest review score?",
-        "gold_sql": "SELECT MIN(review_score) AS lowest_review_score FROM olist_order_reviews_dataset;"
-    },
-    {
-        "id": "E011",
-        "difficulty": "easy",
-        "question": "What is the average product price?",
-        "gold_sql": "SELECT ROUND(AVG(price)::numeric, 2) AS average_product_price FROM olist_order_items_dataset;"
-    },
-    {
-        "id": "E012",
-        "difficulty": "easy",
-        "question": "What is the highest product price?",
-        "gold_sql": "SELECT MAX(price) AS highest_product_price FROM olist_order_items_dataset;"
-    },
-    {
-        "id": "E013",
-        "difficulty": "easy",
-        "question": "What is the total freight value of all order items?",
-        "gold_sql": "SELECT ROUND(SUM(freight_value)::numeric, 2) AS total_freight FROM olist_order_items_dataset;"
-    },
-    {
-        "id": "E014",
-        "difficulty": "easy",
-        "question": "What is the total payment value?",
-        "gold_sql": "SELECT ROUND(SUM(payment_value)::numeric, 2) AS total_payment_value FROM olist_order_payments_dataset;"
-    },
-    {
-        "id": "E015",
-        "difficulty": "easy",
-        "question": "How many payment records are there?",
-        "gold_sql": "SELECT COUNT(*) AS total_payment_records FROM olist_order_payments_dataset;"
-    },
-    {
-        "id": "E016",
-        "difficulty": "easy",
-        "question": "How many review records are there?",
-        "gold_sql": "SELECT COUNT(*) AS total_reviews FROM olist_order_reviews_dataset;"
-    },
-    {
-        "id": "E017",
-        "difficulty": "easy",
-         "question": "What are the different payment methods available?",
-        "gold_sql": "SELECT DISTINCT payment_type FROM olist_order_payments_dataset ORDER BY payment_type;"
-    },
-    {
-        "id": "E018",
-        "difficulty": "easy",
-        "question": "What are the different order statuses?",
-        "gold_sql": "SELECT DISTINCT order_status FROM olist_orders_dataset ORDER BY order_status;"
-    },
-    {
-        "id": "E019",
-        "difficulty": "easy",
-        "question": "What is the most expensive order item?",
-        "gold_sql": "SELECT order_id, order_item_id, price FROM olist_order_items_dataset ORDER BY price DESC LIMIT 1;"
-    },
-    {
-        "id": "E020",
-        "difficulty": "easy",
-        "question": "Show the 5 heaviest products by product weight.",
-        "gold_sql": "SELECT product_id, product_weight_g FROM olist_products_dataset WHERE product_weight_g IS NOT NULL ORDER BY product_weight_g DESC LIMIT 5;"
-    },
-    {
-        "id": "M001",
-        "difficulty": "medium",
-        "question": "How many orders has each customer placed?",
-        "gold_sql": "SELECT c.customer_unique_id, COUNT(o.order_id) AS total_orders FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id GROUP BY c.customer_unique_id ORDER BY total_orders DESC;"
-    },
-    {
-        "id": "M002",
-        "difficulty": "medium",
-        "question": "What is the total spending of each customer?",
-        "gold_sql": "SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id ORDER BY total_spending DESC;"
-    },
-    {
-        "id": "M003",
-        "difficulty": "medium",
-        "question": "What is the average order item price for each product?",
-        "gold_sql": "SELECT product_id, ROUND(AVG(price)::numeric, 2) AS average_price FROM olist_order_items_dataset GROUP BY product_id ORDER BY average_price DESC;"
-    },
-    {
-        "id": "M004",
-        "difficulty": "medium",
-        "question": "Show the number of products in each product category.",
-        "gold_sql": "SELECT product_category_name, COUNT(*) AS product_count FROM olist_products_dataset GROUP BY product_category_name ORDER BY product_count DESC;"
-    },
-    {
-        "id": "M005",
-        "difficulty": "medium",
-        "question": "What is the total revenue generated by each seller?",
-        "gold_sql": "SELECT s.seller_id, SUM(oi.price) AS total_revenue FROM olist_sellers_dataset s JOIN olist_order_items_dataset oi ON s.seller_id = oi.seller_id GROUP BY s.seller_id ORDER BY total_revenue DESC;"
-    },
-    {
-        "id": "M006",
-        "difficulty": "medium",
-        "question": "How many orders are there for each order status?",
-        "gold_sql": "SELECT order_status, COUNT(*) AS order_count FROM olist_orders_dataset GROUP BY order_status ORDER BY order_count DESC;"
-    },
-    {
-        "id": "M007",
-        "difficulty": "medium",
-        "question": "What is the average review score for each order status?",
-        "gold_sql": "SELECT o.order_status, ROUND(AVG(r.review_score)::numeric, 2) AS average_review_score FROM olist_orders_dataset o JOIN olist_order_reviews_dataset r ON o.order_id = r.order_id GROUP BY o.order_status ORDER BY average_review_score DESC;"
-    },
-    {
-        "id": "M008",
-        "difficulty": "medium",
-        "question": "How much total freight value was charged by each seller?",
-        "gold_sql": "SELECT seller_id, ROUND(SUM(freight_value)::numeric, 2) AS total_freight FROM olist_order_items_dataset GROUP BY seller_id ORDER BY total_freight DESC;"
-    },
-    {
-        "id": "M009",
-        "difficulty": "medium",
-        "question": "What is the total payment amount for each payment method?",
-        "gold_sql": "SELECT payment_type, ROUND(SUM(payment_value)::numeric, 2) AS total_payment FROM olist_order_payments_dataset GROUP BY payment_type ORDER BY total_payment DESC;"
-    },
-    {
-        "id": "M010",
-        "difficulty": "medium",
-        "question": "How many orders were placed in each month?",
-        "gold_sql": "SELECT DATE_TRUNC('month', order_purchase_timestamp) AS month, COUNT(*) AS order_count FROM olist_orders_dataset GROUP BY DATE_TRUNC('month', order_purchase_timestamp) ORDER BY month;"
-    },
-    {
-        "id": "M011",
-        "difficulty": "medium",
-        "question": "What is the total item revenue generated in each month?",
-        "gold_sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, ROUND(SUM(oi.price)::numeric, 2) AS monthly_revenue FROM olist_orders_dataset o JOIN olist_order_items_dataset oi ON o.order_id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp) ORDER BY month;"
-    },
-    {
-        "id": "M012",
-        "difficulty": "medium",
-        "question": "Which cities have the highest number of customers?",
-        "gold_sql": "SELECT customer_city, COUNT(*) AS customer_count FROM olist_customers_dataset GROUP BY customer_city ORDER BY customer_count DESC LIMIT 10;"
-    },
-    {
-        "id": "M013",
-        "difficulty": "medium",
-        "question": "Find the top 10 sellers based on the number of items sold.",
-        "gold_sql": "SELECT seller_id, COUNT(*) AS items_sold FROM olist_order_items_dataset GROUP BY seller_id ORDER BY items_sold DESC LIMIT 10;"
-    },
-    {
-         "id": "M014",
-        "difficulty": "medium",
-        "question": "What is the average freight value for each product category?",
-        "gold_sql": "SELECT p.product_category_name, ROUND(AVG(oi.freight_value)::numeric, 2) AS average_freight FROM olist_products_dataset p JOIN olist_order_items_dataset oi ON p.product_id = oi.product_id GROUP BY p.product_category_name ORDER BY average_freight DESC;"
-    },
-    {
-        "id": "M015",
-        "difficulty": "medium",
-        "question": "How many orders were delivered in each customer state?",
-        "gold_sql": "SELECT c.customer_state, COUNT(*) AS delivered_orders FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id WHERE o.order_status = 'delivered' GROUP BY c.customer_state ORDER BY delivered_orders DESC;"
-    },
-    {
-        "id": "M016",
-        "difficulty": "medium",
-        "question": "What is the average number of payment installments for each payment method?",
-        "gold_sql": "SELECT payment_type, ROUND(AVG(payment_installments)::numeric, 2) AS average_installments FROM olist_order_payments_dataset GROUP BY payment_type ORDER BY average_installments DESC;"
-    },
-    {
-        "id": "M017",
-        "difficulty": "medium",
-        "question": "Find product categories with more than 1000 products.",
-        "gold_sql": "SELECT product_category_name, COUNT(*) AS product_count FROM olist_products_dataset GROUP BY product_category_name HAVING COUNT(*) > 1000 ORDER BY product_count DESC;"
-    },
-    {
-        "id": "M018",
-        "difficulty": "medium",
-        "question": "What is the average delivery time in days for delivered orders?",
-        "gold_sql": "SELECT ROUND(AVG(EXTRACT(EPOCH FROM (order_delivered_customer_date - order_purchase_timestamp)) / 86400)::numeric, 2) AS average_delivery_days FROM olist_orders_dataset WHERE order_status = 'delivered' AND order_delivered_customer_date IS NOT NULL AND order_purchase_timestamp IS NOT NULL;"
-    },
-    {
-        "id": "M019",
-        "difficulty": "medium",
-        "question": "How many reviews does each review score have?",
-        "gold_sql": "SELECT review_score, COUNT(*) AS review_count FROM olist_order_reviews_dataset GROUP BY review_score ORDER BY review_score;"
-    },
-    {
-        "id": "M020",
-        "difficulty": "medium",
-        "question": "Find the top 10 product categories by total item revenue, showing their English names where available.",
-        "gold_sql": "SELECT COALESCE(t.product_category_name_english, p.product_category_name) AS category_name, ROUND(SUM(oi.price)::numeric, 2) AS total_revenue FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id LEFT JOIN product_category_name_translation t ON p.product_category_name = t.product_category_name GROUP BY COALESCE(t.product_category_name_english, p.product_category_name) ORDER BY total_revenue DESC LIMIT 10;"
-    },
-    {
-        "id": "H001",
-        "difficulty": "hard",
-        "question": "Find the top 3 customers by total spending, including their customer IDs and total spending.",
-        "gold_sql": "SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id ORDER BY total_spending DESC LIMIT 3;"
-    },
-    {
-        "id": "H002",
-        "difficulty": "hard",
-        "question": "Find the average order value for each month based on the order purchase date.",
-        "gold_sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, ROUND(AVG(order_totals.total_payment)::numeric, 2) AS average_order_value FROM olist_orders_dataset o JOIN (SELECT order_id, SUM(payment_value) AS total_payment FROM olist_order_payments_dataset GROUP BY order_id) order_totals ON o.order_id = order_totals.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp) ORDER BY month;"
-    },
-    {
-        "id": "H003",
-        "difficulty": "hard",
-        "question": "Rank product categories by total sales revenue.",
-        "gold_sql": "SELECT COALESCE(t.product_category_name_english, p.product_category_name) AS category_name, SUM(oi.price) AS total_revenue, RANK() OVER (ORDER BY SUM(oi.price) DESC) AS revenue_rank FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id LEFT JOIN product_category_name_translation t ON p.product_category_name = t.product_category_name GROUP BY COALESCE(t.product_category_name_english, p.product_category_name) ORDER BY revenue_rank;"
-    },
-    {
-        "id": "H004",
-        "difficulty": "hard",
-        "question": "Find customers whose total spending is greater than the average customer spending.",
-        "gold_sql": "WITH customer_spending AS (SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id) SELECT customer_unique_id, total_spending FROM customer_spending WHERE total_spending > (SELECT AVG(total_spending) FROM customer_spending) ORDER BY total_spending DESC;"
-    },
-    {
-        "id": "H005",
-        "difficulty": "hard",
-        "question": "For each order status, calculate the number of orders and the percentage of all orders.",
-        "gold_sql": "SELECT order_status, COUNT(*) AS order_count, ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS percentage_of_orders FROM olist_orders_dataset GROUP BY order_status ORDER BY order_count DESC;"
-    },
-    {
-        "id": "H006",
-        "difficulty": "hard",
-        "question": "Find the top 3 products by revenue within each product category.",
-        "gold_sql": "WITH product_revenue AS (SELECT p.product_category_name, oi.product_id, SUM(oi.price) AS revenue FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id GROUP BY p.product_category_name, oi.product_id), ranked_products AS (SELECT product_category_name, product_id, revenue, DENSE_RANK() OVER (PARTITION BY product_category_name ORDER BY revenue DESC) AS category_rank FROM product_revenue) SELECT product_category_name, product_id, revenue, category_rank FROM ranked_products WHERE category_rank <= 3 ORDER BY product_category_name, category_rank;"
-    },
-    {
-        "id": "H007",
-        "difficulty": "hard",
-        "question": "Calculate the cumulative monthly revenue over time.",
-        "gold_sql": "WITH monthly_revenue AS (SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, SUM(oi.price) AS revenue FROM olist_orders_dataset o JOIN olist_order_items_dataset oi ON o.order_id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp)) SELECT month, revenue, SUM(revenue) OVER (ORDER BY month) AS cumulative_revenue FROM monthly_revenue ORDER BY month;"
-    },
-    {
-        "id": "H008",
-        "difficulty": "hard",
-        "question": "Find orders whose payment total is greater than the average payment total per order.",
-        "gold_sql": "WITH order_payments AS (SELECT order_id, SUM(payment_value) AS total_payment FROM olist_order_payments_dataset GROUP BY order_id) SELECT order_id, total_payment FROM order_payments WHERE total_payment > (SELECT AVG(total_payment) FROM order_payments) ORDER BY total_payment DESC;"
-    },
-    {
-        "id": "H009",
-        "difficulty": "hard",
-        "question": "For each customer, show their most recent order date and the number of orders they placed.",
-        "gold_sql": "SELECT c.customer_unique_id, MAX(o.order_purchase_timestamp) AS most_recent_order, COUNT(o.order_id) AS total_orders FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id GROUP BY c.customer_unique_id ORDER BY most_recent_order DESC;"
-    },
-    {
-        "id": "H010",
-        "difficulty": "hard",
-        "question": "Find the month-over-month change in revenue.",
-        "gold_sql": "WITH monthly_revenue AS (SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, SUM(oi.price) AS revenue FROM olist_orders_dataset o JOIN olist_order_items_dataset oi ON o.order_id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp)) SELECT month, revenue, LAG(revenue) OVER (ORDER BY month) AS previous_month_revenue, revenue - LAG(revenue) OVER (ORDER BY month) AS revenue_change FROM monthly_revenue ORDER BY month;"
-    }
+  {
+    "id": "E001",
+    "difficulty": "easy",
+    "question": "How many orders are there in total?",
+    "gold_sql": "SELECT COUNT(*) AS total_orders FROM olist_orders_dataset;"
+  },
+  {
+    "id": "E002",
+    "difficulty": "easy",
+    "question": "How many unique customers are there?",
+    "gold_sql": "SELECT COUNT(DISTINCT customer_unique_id) AS unique_customers FROM olist_customers_dataset;"
+  },
+  {
+    "id": "E003",
+    "difficulty": "easy",
+    "question": "How many customers are registered in the database?",
+    "gold_sql": "SELECT COUNT(*) AS total_customers FROM olist_customers_dataset;"
+  },
+  {
+    "id": "E004",
+    "difficulty": "easy",
+    "question": "How many sellers are registered?",
+    "gold_sql": "SELECT COUNT(*) AS total_sellers FROM olist_sellers_dataset;"
+  },
+  {
+    "id": "E005",
+    "difficulty": "easy",
+    "question": "How many products are available in the products table?",
+    "gold_sql": "SELECT COUNT(*) AS total_products FROM olist_products_dataset;"
+  },
+  {
+    "id": "E006",
+    "difficulty": "easy",
+    "question": "How many orders have been delivered?",
+    "gold_sql": "SELECT COUNT(*) AS delivered_orders FROM olist_orders_dataset WHERE order_status = 'delivered';"
+  },
+  {
+    "id": "E007",
+    "difficulty": "easy",
+    "question": "How many orders have been canceled?",
+    "gold_sql": "SELECT COUNT(*) AS canceled_orders FROM olist_orders_dataset WHERE order_status = 'canceled';"
+  },
+  {
+    "id": "E008",
+    "difficulty": "easy",
+    "question": "What is the average review score?",
+    "gold_sql": "SELECT ROUND(AVG(review_score)::numeric, 2) AS average_review_score FROM olist_order_reviews_dataset;"
+  },
+  {
+    "id": "E009",
+    "difficulty": "easy",
+    "question": "What is the highest review score?",
+    "gold_sql": "SELECT MAX(review_score) AS highest_review_score FROM olist_order_reviews_dataset;"
+  },
+  {
+    "id": "E010",
+    "difficulty": "easy",
+    "question": "What is the lowest review score?",
+    "gold_sql": "SELECT MIN(review_score) AS lowest_review_score FROM olist_order_reviews_dataset;"
+  },
+  {
+    "id": "E011",
+    "difficulty": "easy",
+    "question": "What is the average product price?",
+    "gold_sql": "SELECT ROUND(AVG(price)::numeric, 2) AS average_product_price FROM olist_order_items_dataset;"
+  },
+  {
+    "id": "E012",
+    "difficulty": "easy",
+    "question": "What is the highest product price?",
+    "gold_sql": "SELECT MAX(price) AS highest_product_price FROM olist_order_items_dataset;"
+  },
+  {
+    "id": "E013",
+    "difficulty": "easy",
+    "question": "What is the total freight value of all order items?",
+    "gold_sql": "SELECT ROUND(SUM(freight_value)::numeric, 2) AS total_freight FROM olist_order_items_dataset;"
+  },
+  {
+    "id": "E014",
+    "difficulty": "easy",
+    "question": "What is the total payment value?",
+    "gold_sql": "SELECT ROUND(SUM(payment_value)::numeric, 2) AS total_payment_value FROM olist_order_payments_dataset;"
+  },
+  {
+    "id": "E015",
+    "difficulty": "easy",
+    "question": "How many payment records are there?",
+    "gold_sql": "SELECT COUNT(*) AS total_payment_records FROM olist_order_payments_dataset;"
+  },
+  {
+    "id": "E016",
+    "difficulty": "easy",
+    "question": "How many review records are there?",
+    "gold_sql": "SELECT COUNT(*) AS total_reviews FROM olist_order_reviews_dataset;"
+  },
+  {
+    "id": "E017",
+    "difficulty": "easy",
+    "question": "What are the different payment methods available?",
+    "gold_sql": "SELECT DISTINCT payment_type FROM olist_order_payments_dataset ORDER BY payment_type;"
+  },
+  {
+    "id": "E018",
+    "difficulty": "easy",
+    "question": "What are the different order statuses?",
+    "gold_sql": "SELECT DISTINCT order_status FROM olist_orders_dataset ORDER BY order_status;"
+  },
+  {
+    "id": "E019",
+    "difficulty": "easy",
+    "question": "Show the order_id, order_item_id and price of the most expensive order item.",
+    "gold_sql": "SELECT order_id, order_item_id, price FROM olist_order_items_dataset ORDER BY price DESC LIMIT 1;"
+  },
+  {
+    "id": "E020",
+    "difficulty": "easy",
+    "question": "Show the 5 heaviest products by product weight (ignore products with no recorded weight).",
+    "gold_sql": "SELECT product_id, product_weight_g FROM olist_products_dataset WHERE product_weight_g IS NOT NULL ORDER BY product_weight_g DESC LIMIT 5;"
+  },
+  {
+    "id": "M001",
+    "difficulty": "medium",
+    "question": "How many orders has each customer placed?",
+    "gold_sql": "SELECT c.customer_unique_id, COUNT(o.order_id) AS total_orders FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id GROUP BY c.customer_unique_id ORDER BY total_orders DESC;"
+  },
+  {
+    "id": "M002",
+    "difficulty": "medium",
+    "question": "What is the total spending of each customer?",
+    "gold_sql": "SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id ORDER BY total_spending DESC;"
+  },
+  {
+    "id": "M003",
+    "difficulty": "medium",
+    "question": "What is the average order item price for each product?",
+    "gold_sql": "SELECT product_id, ROUND(AVG(price)::numeric, 2) AS average_price FROM olist_order_items_dataset GROUP BY product_id ORDER BY average_price DESC;"
+  },
+  {
+    "id": "M004",
+    "difficulty": "medium",
+    "question": "Show the number of products in each product category.",
+    "gold_sql": "SELECT product_category_name, COUNT(*) AS product_count FROM olist_products_dataset GROUP BY product_category_name ORDER BY product_count DESC;"
+  },
+  {
+    "id": "M005",
+    "difficulty": "medium",
+    "question": "What is the total revenue generated by each seller?",
+    "gold_sql": "SELECT s.seller_id, SUM(oi.price) AS total_revenue FROM olist_sellers_dataset s JOIN olist_order_items_dataset oi ON s.seller_id = oi.seller_id GROUP BY s.seller_id ORDER BY total_revenue DESC;"
+  },
+  {
+    "id": "M006",
+    "difficulty": "medium",
+    "question": "How many orders are there for each order status?",
+    "gold_sql": "SELECT order_status, COUNT(*) AS order_count FROM olist_orders_dataset GROUP BY order_status ORDER BY order_count DESC;"
+  },
+  {
+    "id": "M007",
+    "difficulty": "medium",
+    "question": "What is the average review score for each order status?",
+    "gold_sql": "SELECT o.order_status, ROUND(AVG(r.review_score)::numeric, 2) AS average_review_score FROM olist_orders_dataset o JOIN olist_order_reviews_dataset r ON o.order_id = r.order_id GROUP BY o.order_status ORDER BY average_review_score DESC;"
+  },
+  {
+    "id": "M008",
+    "difficulty": "medium",
+    "question": "How much total freight value was charged by each seller?",
+    "gold_sql": "SELECT seller_id, ROUND(SUM(freight_value)::numeric, 2) AS total_freight FROM olist_order_items_dataset GROUP BY seller_id ORDER BY total_freight DESC;"
+  },
+  {
+    "id": "M009",
+    "difficulty": "medium",
+    "question": "What is the total payment amount for each payment method?",
+    "gold_sql": "SELECT payment_type, ROUND(SUM(payment_value)::numeric, 2) AS total_payment FROM olist_order_payments_dataset GROUP BY payment_type ORDER BY total_payment DESC;"
+  },
+  {
+    "id": "M010",
+    "difficulty": "medium",
+    "question": "How many orders were placed in each month?",
+    "gold_sql": "SELECT DATE_TRUNC('month', order_purchase_timestamp) AS month, COUNT(*) AS order_count FROM olist_orders_dataset GROUP BY DATE_TRUNC('month', order_purchase_timestamp) ORDER BY month;"
+  },
+  {
+    "id": "M011",
+    "difficulty": "medium",
+    "question": "What is the total item revenue generated in each month?",
+    "gold_sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, ROUND(SUM(oi.price)::numeric, 2) AS monthly_revenue FROM olist_orders_dataset o JOIN olist_order_items_dataset oi ON o.order_id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp) ORDER BY month;"
+  },
+  {
+    "id": "M012",
+    "difficulty": "medium",
+    "question": "Show the top 10 cities by number of customers.",
+    "gold_sql": "SELECT customer_city, COUNT(*) AS customer_count FROM olist_customers_dataset GROUP BY customer_city ORDER BY customer_count DESC LIMIT 10;"
+  },
+  {
+    "id": "M013",
+    "difficulty": "medium",
+    "question": "Find the top 10 sellers based on the number of items sold.",
+    "gold_sql": "SELECT seller_id, COUNT(*) AS items_sold FROM olist_order_items_dataset GROUP BY seller_id ORDER BY items_sold DESC LIMIT 10;"
+  },
+  {
+    "id": "M014",
+    "difficulty": "medium",
+    "question": "What is the average freight value for each product category? Use the original category name from the products table.",
+    "gold_sql": "SELECT p.product_category_name, ROUND(AVG(oi.freight_value)::numeric, 2) AS average_freight FROM olist_products_dataset p JOIN olist_order_items_dataset oi ON p.product_id = oi.product_id GROUP BY p.product_category_name ORDER BY average_freight DESC;"
+  },
+  {
+    "id": "M015",
+    "difficulty": "medium",
+    "question": "How many orders were delivered in each customer state?",
+    "gold_sql": "SELECT c.customer_state, COUNT(*) AS delivered_orders FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id WHERE o.order_status = 'delivered' GROUP BY c.customer_state ORDER BY delivered_orders DESC;"
+  },
+  {
+    "id": "M016",
+    "difficulty": "medium",
+    "question": "What is the average number of payment installments for each payment method?",
+    "gold_sql": "SELECT payment_type, ROUND(AVG(payment_installments)::numeric, 2) AS average_installments FROM olist_order_payments_dataset GROUP BY payment_type ORDER BY average_installments DESC;"
+  },
+  {
+    "id": "M017",
+    "difficulty": "medium",
+    "question": "Find product categories with more than 1000 products.",
+    "gold_sql": "SELECT product_category_name, COUNT(*) AS product_count FROM olist_products_dataset GROUP BY product_category_name HAVING COUNT(*) > 1000 ORDER BY product_count DESC;"
+  },
+  {
+    "id": "M018",
+    "difficulty": "medium",
+    "question": "What is the average delivery time in days for delivered orders?",
+    "gold_sql": "SELECT ROUND(AVG(EXTRACT(EPOCH FROM (order_delivered_customer_date - order_purchase_timestamp)) / 86400)::numeric, 2) AS average_delivery_days FROM olist_orders_dataset WHERE order_status = 'delivered' AND order_delivered_customer_date IS NOT NULL AND order_purchase_timestamp IS NOT NULL;"
+  },
+  {
+    "id": "M019",
+    "difficulty": "medium",
+    "question": "How many reviews does each review score have?",
+    "gold_sql": "SELECT review_score, COUNT(*) AS review_count FROM olist_order_reviews_dataset GROUP BY review_score ORDER BY review_score;"
+  },
+  {
+    "id": "M020",
+    "difficulty": "medium",
+    "question": "Find the top 10 product categories by total item revenue, showing their English names where available.",
+    "gold_sql": "SELECT COALESCE(t.product_category_name_english, p.product_category_name) AS category_name, ROUND(SUM(oi.price)::numeric, 2) AS total_revenue FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id LEFT JOIN product_category_name_translation t ON p.product_category_name = t.product_category_name GROUP BY COALESCE(t.product_category_name_english, p.product_category_name) ORDER BY total_revenue DESC LIMIT 10;"
+  },
+  {
+    "id": "H001",
+    "difficulty": "hard",
+    "question": "Find the top 3 customers by total spending, including their customer IDs and total spending.",
+    "gold_sql": "SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id ORDER BY total_spending DESC LIMIT 3;"
+  },
+  {
+    "id": "H002",
+    "difficulty": "hard",
+    "question": "Find the average order value for each month based on the order purchase date.",
+    "gold_sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, ROUND(AVG(order_totals.total_payment)::numeric, 2) AS average_order_value FROM olist_orders_dataset o JOIN (SELECT order_id, SUM(payment_value) AS total_payment FROM olist_order_payments_dataset GROUP BY order_id) order_totals ON o.order_id = order_totals.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp) ORDER BY month;"
+  },
+  {
+    "id": "H003",
+    "difficulty": "hard",
+    "question": "Rank product categories by total sales revenue.",
+    "gold_sql": "SELECT COALESCE(t.product_category_name_english, p.product_category_name) AS category_name, SUM(oi.price) AS total_revenue, RANK() OVER (ORDER BY SUM(oi.price) DESC) AS revenue_rank FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id LEFT JOIN product_category_name_translation t ON p.product_category_name = t.product_category_name GROUP BY COALESCE(t.product_category_name_english, p.product_category_name) ORDER BY revenue_rank;"
+  },
+  {
+    "id": "H004",
+    "difficulty": "hard",
+    "question": "Find customers whose total spending is greater than the average customer spending.",
+    "gold_sql": "WITH customer_spending AS (SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id) SELECT customer_unique_id, total_spending FROM customer_spending WHERE total_spending > (SELECT AVG(total_spending) FROM customer_spending) ORDER BY total_spending DESC;"
+  },
+  {
+    "id": "H005",
+    "difficulty": "hard",
+    "question": "For each order status, calculate the number of orders and the percentage of all orders.",
+    "gold_sql": "SELECT order_status, COUNT(*) AS order_count, ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS percentage_of_orders FROM olist_orders_dataset GROUP BY order_status ORDER BY order_count DESC;"
+  },
+  {
+    "id": "H006",
+    "difficulty": "hard",
+    "question": "Find the top 3 products by revenue within each product category. Use the original category name from the products table.",
+    "gold_sql": "WITH product_revenue AS (SELECT p.product_category_name, oi.product_id, SUM(oi.price) AS revenue FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id GROUP BY p.product_category_name, oi.product_id), ranked_products AS (SELECT product_category_name, product_id, revenue, DENSE_RANK() OVER (PARTITION BY product_category_name ORDER BY revenue DESC) AS category_rank FROM product_revenue) SELECT product_category_name, product_id, revenue, category_rank FROM ranked_products WHERE category_rank <= 3 ORDER BY product_category_name, category_rank;"
+  },
+  {
+    "id": "H007",
+    "difficulty": "hard",
+    "question": "Calculate the cumulative monthly revenue over time, where revenue is the sum of item prices.",
+    "gold_sql": "WITH monthly_revenue AS (SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, SUM(oi.price) AS revenue FROM olist_orders_dataset o JOIN olist_order_items_dataset oi ON o.order_id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp)) SELECT month, revenue, SUM(revenue) OVER (ORDER BY month) AS cumulative_revenue FROM monthly_revenue ORDER BY month;"
+  },
+  {
+    "id": "H008",
+    "difficulty": "hard",
+    "question": "Find orders whose payment total is greater than the average payment total per order.",
+    "gold_sql": "WITH order_payments AS (SELECT order_id, SUM(payment_value) AS total_payment FROM olist_order_payments_dataset GROUP BY order_id) SELECT order_id, total_payment FROM order_payments WHERE total_payment > (SELECT AVG(total_payment) FROM order_payments) ORDER BY total_payment DESC;"
+  },
+  {
+    "id": "H009",
+    "difficulty": "hard",
+    "question": "For each unique customer (customer_unique_id), show their most recent order date and the number of orders they placed.",
+    "gold_sql": "SELECT c.customer_unique_id, MAX(o.order_purchase_timestamp) AS most_recent_order, COUNT(o.order_id) AS total_orders FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id GROUP BY c.customer_unique_id ORDER BY most_recent_order DESC;"
+  },
+  {
+    "id": "H010",
+    "difficulty": "hard",
+    "question": "Find the month-over-month change in revenue, where revenue is the sum of item prices.",
+    "gold_sql": "WITH monthly_revenue AS (SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, SUM(oi.price) AS revenue FROM olist_orders_dataset o JOIN olist_order_items_dataset oi ON o.order_id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp)) SELECT month, revenue, LAG(revenue) OVER (ORDER BY month) AS previous_month_revenue, revenue - LAG(revenue) OVER (ORDER BY month) AS revenue_change FROM monthly_revenue ORDER BY month;"
+  }
 ]

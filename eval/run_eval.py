@@ -1,128 +1,176 @@
-"""Evaluate the baseline Text-to-SQL system."""
+"""Evaluate a pipeline version against eval/questions.json.
 
+Usage (from the project root):
+    python -m eval.run_eval --version baseline
+    python -m eval.run_eval --version v2
+    python -m eval.run_eval --version v3
+    python -m eval.run_eval --version v3 --ids E001,M002     # quick check
+    python -m eval.run_eval --version v3 --limit 10
+
+Versions:
+    baseline  full schema in the prompt
+    v2        schema retrieval + few-shot examples
+    v3        LangGraph workflow (router, retry loop, analyst)
+
+Leakage guard: the few-shot store was built from these same questions, so for
+each test question its own example id is excluded from retrieval.
+"""
+
+import argparse
 import json
-import sys
 import time
-from pathlib import Path
 
-from sqlalchemy import text
+from src import config, db, llm
+from eval.compare import results_match
 
-# Allow importing baseline.py from the src directory.
-PROJECT_ROOT = Path(__file__).resolve().parent.parent
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
-
-from baseline import engine, generate_sql
-
-QUESTIONS_FILE = PROJECT_ROOT / "eval" / "questions.json"
-RESULTS_DIR = PROJECT_ROOT / "eval" / "results"
-OUTPUT_FILE = RESULTS_DIR / "baseline.json"
+PREVIEW_ROWS = 5
 
 
-def execute_query(sql: str):
-    """Execute SQL and return rows as normalized tuples."""
-    with engine.connect() as connection:
-        result = connection.execute(text(sql))
-        rows = [tuple(row) for row in result.fetchall()]
+def build_runner(version: str):
+    """Return run(question, qid) -> dict(sql, columns, rows, error, retries, route)."""
+    if version in ("baseline", "v2"):
+        if version == "baseline":
+            from src.pipelines.baseline_v1 import generate_sql
+        else:
+            from src.pipelines.baseline_v2 import generate_sql
 
-    # Sorting makes comparison independent of row order.
-    return sorted(rows, key=lambda row: repr(row))
+        def run(question: str, qid: str) -> dict:
+            sql = generate_sql(question, exclude_ids=[qid])
+            try:
+                columns, rows = db.run_query(sql)
+                error = ""
+            except Exception as exc:
+                columns, rows, error = [], None, str(exc)
+            return {"sql": sql, "columns": columns, "rows": rows,
+                    "error": error, "retries": 0, "route": None}
+
+        return run
+
+    if version == "v3":
+        from src.graph.builder import build_graph
+
+        graph = build_graph()
+
+        def run(question: str, qid: str) -> dict:
+            state = graph.invoke(
+                {"question": question, "retries": 0, "exclude_example_ids": [qid]}
+            )
+            error = state.get("error", "")
+            return {"sql": state.get("sql", ""), "columns": state.get("columns", []),
+                    "rows": None if error else state.get("rows"),
+                    "error": error, "retries": state.get("retries", 0),
+                    "route": state.get("route")}
+
+        return run
+
+    raise ValueError(f"Unknown version: {version}")
 
 
-def results_match(generated, expected) -> bool:
-    """Compare result sets without considering row order."""
-    return generated == expected
+def summarize(results: list[dict], version: str) -> dict:
+    total = len(results)
+    passed = sum(r["passed"] for r in results)
 
+    by_difficulty = {}
+    for level in ("easy", "medium", "hard"):
+        subset = [r for r in results if r["difficulty"] == level]
+        if subset:
+            ok = sum(r["passed"] for r in subset)
+            by_difficulty[level] = {"passed": ok, "total": len(subset),
+                                    "accuracy": round(ok / len(subset), 4)}
 
-def evaluate_question(question_data: dict) -> dict:
-    """Generate and evaluate SQL for one question."""
-    question_id = question_data["id"]
-    question = question_data["question"]
-    gold_sql = question_data["gold_sql"]
+    tokens_in = sum(r["tokens_in"] for r in results)
+    tokens_out = sum(r["tokens_out"] for r in results)
+    cost = llm.estimate_cost(tokens_in, tokens_out)
 
-    start_time = time.perf_counter()
-
-    try:
-        generated_sql = generate_sql(question)
-        generation_time = time.perf_counter() - start_time
-
-        generated_result = execute_query(generated_sql)
-        gold_result = execute_query(gold_sql)
-
-        passed = results_match(generated_result, gold_result)
-
-        return {
-            "id": question_id,
-            "question": question,
-            "generated_sql": generated_sql,
-            "gold_sql": gold_sql,
-            "passed": passed,
-            "latency_seconds": round(generation_time, 3),
-            "error": None,
-        }
-
-    except Exception as error:
-        return {
-            "id": question_id,
-            "question": question,
-            "generated_sql": None,
-            "gold_sql": gold_sql,
-            "passed": False,
-            "latency_seconds": round(time.perf_counter() - start_time, 3),
-            "error": str(error),
-        }
+    return {
+        "version": version,
+        "total_questions": total,
+        "passed": passed,
+        "failed": total - passed,
+        "accuracy": round(passed / total, 4) if total else 0,
+        "by_difficulty": by_difficulty,
+        "average_latency_seconds": round(sum(r["latency_seconds"] for r in results) / total, 3) if total else 0,
+        "average_retries": round(sum(r["retries"] for r in results) / total, 3) if total else 0,
+        "execution_errors": sum(1 for r in results if r["error"]),
+        "tokens_input": tokens_in,
+        "tokens_output": tokens_out,
+        "estimated_cost_usd": round(cost, 4),
+        "average_cost_per_question_usd": round(cost / total, 5) if total else 0,
+    }
 
 
 def main():
-    """Run the complete evaluation."""
-    with open(QUESTIONS_FILE, "r", encoding="utf-8") as file:
-        questions = json.load(file)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--version", required=True, choices=["baseline", "v2", "v3"])
+    parser.add_argument("--ids", help="comma-separated question ids")
+    parser.add_argument("--limit", type=int)
+    args = parser.parse_args()
 
+    questions = json.loads(config.QUESTIONS_FILE.read_text(encoding="utf-8"))
+    if args.ids:
+        wanted = set(args.ids.split(","))
+        questions = [q for q in questions if q["id"] in wanted]
+    if args.limit:
+        questions = questions[: args.limit]
+
+    run = build_runner(args.version)
     results = []
-    total = len(questions)
 
-    for index, question_data in enumerate(questions, start=1):
-        print(f"[{index}/{total}] Evaluating {question_data['id']}")
+    for number, item in enumerate(questions, start=1):
+        print(f"[{number}/{len(questions)}] {item['id']}: {item['question']}")
 
-        result = evaluate_question(question_data)
-        results.append(result)
+        before_in, before_out = llm.usage["input"], llm.usage["output"]
+        start = time.perf_counter()
+        error, out = "", {}
 
-        status = "PASS" if result["passed"] else "FAIL"
-        print(f"  {status} | {result['latency_seconds']}s")
+        try:
+            out = run(item["question"], item["id"])
+            error = out["error"]
+            _, gold_rows = db.run_query(item["gold_sql"])
+            passed = (not error) and results_match(out["rows"], gold_rows)
+        except Exception as exc:  # LLM / retrieval / unexpected failure
+            passed, error, gold_rows = False, str(exc), None
 
-        if result["error"]:
-            print(f"  Error: {result['error']}")
+        latency = time.perf_counter() - start
+        rows = out.get("rows")
 
-    passed = sum(result["passed"] for result in results)
-    failed = total - passed
+        results.append({
+            "id": item["id"],
+            "difficulty": item.get("difficulty"),
+            "question": item["question"],
+            "passed": bool(passed),
+            "route": out.get("route"),
+            "retries": out.get("retries", 0),
+            "generated_sql": out.get("sql"),
+            "gold_sql": item["gold_sql"],
+            "generated_row_count": len(rows) if rows is not None else None,
+            "gold_row_count": len(gold_rows) if gold_rows is not None else None,
+            "generated_preview": rows[:PREVIEW_ROWS] if rows else rows,
+            "gold_preview": gold_rows[:PREVIEW_ROWS] if gold_rows else gold_rows,
+            "error": error,
+            "latency_seconds": round(latency, 3),
+            "tokens_in": llm.usage["input"] - before_in,
+            "tokens_out": llm.usage["output"] - before_out,
+        })
+        print(f"   {'PASS' if passed else 'FAIL'}  {latency:.1f}s  retries={out.get('retries', 0)}")
 
-    latencies = [result["latency_seconds"] for result in results]
-    average_latency = sum(latencies) / total if total else 0
+    summary = summarize(results, args.version)
 
-    summary = {
-        "total_questions": total,
-        "passed": passed,
-        "failed": failed,
-        "accuracy": round(passed / total, 4) if total else 0,
-        "average_latency_seconds": round(average_latency, 3),
-        "estimated_cost_usd": None,
-        "results": results,
-    }
+    config.RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    output_file = config.RESULTS_DIR / f"{args.version}.json"
+    output_file.write_text(
+        json.dumps({"summary": summary, "results": results}, indent=2, ensure_ascii=False),
+        encoding="utf-8",
+    )
 
-    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
-
-    with open(OUTPUT_FILE, "w", encoding="utf-8") as file:
-        json.dump(summary, file, indent=2, ensure_ascii=False)
-
-    print("\nEvaluation Summary")
-    print(f"Total: {total}")
-    print(f"Passed: {passed}")
-    print(f"Failed: {failed}")
-    print(f"Accuracy: {summary['accuracy'] * 100:.2f}%")
-    print(f"Average latency: {summary['average_latency_seconds']}s")
-    print("Estimated cost: Not measured")
-    print(f"Results saved to: {OUTPUT_FILE}")
-
-    engine.dispose()
+    print("\n" + "=" * 60)
+    print(f"{args.version}: {summary['passed']}/{summary['total_questions']} "
+          f"= {summary['accuracy']:.0%}")
+    for level, stats in summary["by_difficulty"].items():
+        print(f"  {level:7} {stats['passed']}/{stats['total']}")
+    print(f"avg latency {summary['average_latency_seconds']}s | "
+          f"est. cost ${summary['estimated_cost_usd']}")
+    print(f"saved to {output_file}")
 
 
 if __name__ == "__main__":

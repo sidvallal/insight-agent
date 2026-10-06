@@ -1,465 +1,2461 @@
 {
-  "total_questions": 50,
-  "passed": 26,
-  "failed": 24,
-  "accuracy": 0.52,
-  "average_latency_seconds": 7.669,
-  "total_tokens": 137173,
-  "input_tokens": 126600,
-  "output_tokens": 10590,
-  "estimated_cost_usd": 0.02,
-  "average_cost_per_question_usd": 0.0004,
-
+  "summary": {
+    "version": "baseline",
+    "total_questions": 50,
+    "passed": 35,
+    "failed": 15,
+    "accuracy": 0.7,
+    "by_difficulty": {
+      "easy": {
+        "passed": 18,
+        "total": 20,
+        "accuracy": 0.9
+      },
+      "medium": {
+        "passed": 12,
+        "total": 20,
+        "accuracy": 0.6
+      },
+      "hard": {
+        "passed": 5,
+        "total": 10,
+        "accuracy": 0.5
+      }
+    },
+    "average_latency_seconds": 11.794,
+    "average_retries": 0.0,
+    "execution_errors": 0,
+    "tokens_input": 123969,
+    "tokens_output": 9718,
+    "estimated_cost_usd": 0.0244,
+    "average_cost_per_question_usd": 0.00049
+  },
   "results": [
     {
       "id": "E001",
+      "difficulty": "easy",
       "question": "How many orders are there in total?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT COUNT(*) AS total_orders\nFROM olist_orders_dataset;",
       "gold_sql": "SELECT COUNT(*) AS total_orders FROM olist_orders_dataset;",
-      "passed": true,
-      "latency_seconds": 1.343,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          99441
+        ]
+      ],
+      "gold_preview": [
+        [
+          99441
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 6.309,
+      "tokens_in": 2476,
+      "tokens_out": 56
     },
     {
       "id": "E002",
+      "difficulty": "easy",
       "question": "How many unique customers are there?",
-      "generated_sql": "SELECT COUNT(DISTINCT customer_unique_id) AS unique_customers\nFROM olist_customers_dataset;",
+      "passed": false,
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT COUNT(*) AS unique_customers\nFROM olist_customers_dataset;",
       "gold_sql": "SELECT COUNT(DISTINCT customer_unique_id) AS unique_customers FROM olist_customers_dataset;",
-      "passed": true,
-      "latency_seconds": 1.08,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          99441
+        ]
+      ],
+      "gold_preview": [
+        [
+          96096
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 1.366,
+      "tokens_in": 2475,
+      "tokens_out": 140
     },
     {
       "id": "E003",
+      "difficulty": "easy",
       "question": "How many customers are registered in the database?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT COUNT(*) AS total_customers\nFROM olist_customers_dataset;",
       "gold_sql": "SELECT COUNT(*) AS total_customers FROM olist_customers_dataset;",
-      "passed": true,
-      "latency_seconds": 0.841,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          99441
+        ]
+      ],
+      "gold_preview": [
+        [
+          99441
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 0.654,
+      "tokens_in": 2477,
+      "tokens_out": 76
     },
     {
       "id": "E004",
+      "difficulty": "easy",
       "question": "How many sellers are registered?",
-      "generated_sql": "SELECT COUNT(DISTINCT seller_id) AS seller_count\nFROM olist_sellers_dataset;",
-      "gold_sql": "SELECT COUNT(*) AS total_sellers FROM olist_sellers_dataset;",
       "passed": true,
-      "latency_seconds": 0.93,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT COUNT(*) AS seller_count\nFROM olist_sellers_dataset;",
+      "gold_sql": "SELECT COUNT(*) AS total_sellers FROM olist_sellers_dataset;",
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          3095
+        ]
+      ],
+      "gold_preview": [
+        [
+          3095
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 3.762,
+      "tokens_in": 2474,
+      "tokens_out": 82
     },
     {
       "id": "E005",
+      "difficulty": "easy",
       "question": "How many products are available in the products table?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT COUNT(*) AS product_count\nFROM olist_products_dataset;",
       "gold_sql": "SELECT COUNT(*) AS total_products FROM olist_products_dataset;",
-      "passed": true,
-      "latency_seconds": 0.827,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          32951
+        ]
+      ],
+      "gold_preview": [
+        [
+          32951
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 13.903,
+      "tokens_in": 2478,
+      "tokens_out": 61
     },
     {
       "id": "E006",
+      "difficulty": "easy",
       "question": "How many orders have been delivered?",
+      "passed": false,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT COUNT(*) AS delivered_orders\nFROM olist_orders_dataset\nWHERE order_delivered_customer_date IS NOT NULL;",
       "gold_sql": "SELECT COUNT(*) AS delivered_orders FROM olist_orders_dataset WHERE order_status = 'delivered';",
-      "passed": false,
-      "latency_seconds": 1.216,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          96476
+        ]
+      ],
+      "gold_preview": [
+        [
+          96478
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 19.35,
+      "tokens_in": 2475,
+      "tokens_out": 131
     },
     {
       "id": "E007",
+      "difficulty": "easy",
       "question": "How many orders have been canceled?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT COUNT(*) AS canceled_orders\nFROM olist_orders_dataset\nWHERE order_status = 'canceled';",
       "gold_sql": "SELECT COUNT(*) AS canceled_orders FROM olist_orders_dataset WHERE order_status = 'canceled';",
-      "passed": true,
-      "latency_seconds": 1.093,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          625
+        ]
+      ],
+      "gold_preview": [
+        [
+          625
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 19.255,
+      "tokens_in": 2475,
+      "tokens_out": 124
     },
     {
       "id": "E008",
+      "difficulty": "easy",
       "question": "What is the average review score?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT AVG(review_score) AS average_review_score\nFROM olist_order_reviews_dataset;",
       "gold_sql": "SELECT ROUND(AVG(review_score)::numeric, 2) AS average_review_score FROM olist_order_reviews_dataset;",
-      "passed": false,
-      "latency_seconds": 3.354,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          4.08642062404257
+        ]
+      ],
+      "gold_preview": [
+        [
+          4.09
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 19.311,
+      "tokens_in": 2475,
+      "tokens_out": 83
     },
     {
       "id": "E009",
+      "difficulty": "easy",
       "question": "What is the highest review score?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT MAX(review_score) AS highest_review_score\nFROM olist_order_reviews_dataset;",
       "gold_sql": "SELECT MAX(review_score) AS highest_review_score FROM olist_order_reviews_dataset;",
-      "passed": true,
-      "latency_seconds": 18.682,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          5
+        ]
+      ],
+      "gold_preview": [
+        [
+          5
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 19.423,
+      "tokens_in": 2475,
+      "tokens_out": 71
     },
     {
       "id": "E010",
+      "difficulty": "easy",
       "question": "What is the lowest review score?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT MIN(review_score) AS lowest_review_score\nFROM olist_order_reviews_dataset;",
       "gold_sql": "SELECT MIN(review_score) AS lowest_review_score FROM olist_order_reviews_dataset;",
-      "passed": true,
-      "latency_seconds": 1.606,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          1
+        ]
+      ],
+      "gold_preview": [
+        [
+          1
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 18.829,
+      "tokens_in": 2475,
+      "tokens_out": 71
     },
     {
       "id": "E011",
+      "difficulty": "easy",
       "question": "What is the average product price?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT AVG(price) AS average_price\nFROM olist_order_items_dataset;",
       "gold_sql": "SELECT ROUND(AVG(price)::numeric, 2) AS average_product_price FROM olist_order_items_dataset;",
-      "passed": false,
-      "latency_seconds": 20.231,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          120.65373901464714
+        ]
+      ],
+      "gold_preview": [
+        [
+          120.65
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 19.397,
+      "tokens_in": 2475,
+      "tokens_out": 154
     },
     {
       "id": "E012",
+      "difficulty": "easy",
       "question": "What is the highest product price?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT MAX(price) AS highest_price\nFROM olist_order_items_dataset;",
       "gold_sql": "SELECT MAX(price) AS highest_product_price FROM olist_order_items_dataset;",
-      "passed": true,
-      "latency_seconds": 1.77,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          6735.0
+        ]
+      ],
+      "gold_preview": [
+        [
+          6735.0
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 2.059,
+      "tokens_in": 2475,
+      "tokens_out": 122
     },
     {
       "id": "E013",
+      "difficulty": "easy",
       "question": "What is the total freight value of all order items?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT SUM(freight_value) AS total_freight\nFROM olist_order_items_dataset;",
       "gold_sql": "SELECT ROUND(SUM(freight_value)::numeric, 2) AS total_freight FROM olist_order_items_dataset;",
-      "passed": true,
-      "latency_seconds": 1.119,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          2251909.54
+        ]
+      ],
+      "gold_preview": [
+        [
+          2251909.54
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 20.171,
+      "tokens_in": 2479,
+      "tokens_out": 82
     },
     {
       "id": "E014",
+      "difficulty": "easy",
       "question": "What is the total payment value?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT SUM(payment_value) AS total_payment_value\nFROM olist_order_payments_dataset;",
       "gold_sql": "SELECT ROUND(SUM(payment_value)::numeric, 2) AS total_payment_value FROM olist_order_payments_dataset;",
-      "passed": true,
-      "latency_seconds": 3.949,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          16008872.12
+        ]
+      ],
+      "gold_preview": [
+        [
+          16008872.12
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 18.88,
+      "tokens_in": 2475,
+      "tokens_out": 118
     },
     {
       "id": "E015",
+      "difficulty": "easy",
       "question": "How many payment records are there?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT COUNT(*) AS payment_record_count\nFROM olist_order_payments_dataset;",
       "gold_sql": "SELECT COUNT(*) AS total_payment_records FROM olist_order_payments_dataset;",
-      "passed": true,
-      "latency_seconds": 1.011,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          103886
+        ]
+      ],
+      "gold_preview": [
+        [
+          103886
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 27.181,
+      "tokens_in": 2475,
+      "tokens_out": 67
     },
     {
       "id": "E016",
+      "difficulty": "easy",
       "question": "How many review records are there?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT COUNT(*) AS review_count\nFROM olist_order_reviews_dataset;",
       "gold_sql": "SELECT COUNT(*) AS total_reviews FROM olist_order_reviews_dataset;",
-      "passed": true,
-      "latency_seconds": 2.54,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          99224
+        ]
+      ],
+      "gold_preview": [
+        [
+          99224
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 0.754,
+      "tokens_in": 2475,
+      "tokens_out": 63
     },
     {
       "id": "E017",
+      "difficulty": "easy",
       "question": "What are the different payment methods available?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT DISTINCT payment_type\nFROM olist_order_payments_dataset;",
       "gold_sql": "SELECT DISTINCT payment_type FROM olist_order_payments_dataset ORDER BY payment_type;",
-      "passed": true,
-      "latency_seconds": 1.123,
-      "error": null
+      "generated_row_count": 5,
+      "gold_row_count": 5,
+      "generated_preview": [
+        [
+          "not_defined"
+        ],
+        [
+          "boleto"
+        ],
+        [
+          "debit_card"
+        ],
+        [
+          "voucher"
+        ],
+        [
+          "credit_card"
+        ]
+      ],
+      "gold_preview": [
+        [
+          "boleto"
+        ],
+        [
+          "credit_card"
+        ],
+        [
+          "debit_card"
+        ],
+        [
+          "not_defined"
+        ],
+        [
+          "voucher"
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 12.086,
+      "tokens_in": 2476,
+      "tokens_out": 73
     },
     {
       "id": "E018",
+      "difficulty": "easy",
       "question": "What are the different order statuses?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT DISTINCT order_status\nFROM olist_orders_dataset\nORDER BY order_status;",
       "gold_sql": "SELECT DISTINCT order_status FROM olist_orders_dataset ORDER BY order_status;",
-      "passed": true,
-      "latency_seconds": 19.046,
-      "error": null
+      "generated_row_count": 8,
+      "gold_row_count": 8,
+      "generated_preview": [
+        [
+          "approved"
+        ],
+        [
+          "canceled"
+        ],
+        [
+          "created"
+        ],
+        [
+          "delivered"
+        ],
+        [
+          "invoiced"
+        ]
+      ],
+      "gold_preview": [
+        [
+          "approved"
+        ],
+        [
+          "canceled"
+        ],
+        [
+          "created"
+        ],
+        [
+          "delivered"
+        ],
+        [
+          "invoiced"
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 19.372,
+      "tokens_in": 2475,
+      "tokens_out": 71
     },
     {
       "id": "E019",
-      "question": "What is the most expensive order item?",
-      "generated_sql": "SELECT\n    order_id,\n    order_item_id,\n    product_id,\n    seller_id,\n    price,\n    freight_value\nFROM olist_order_items_dataset\nORDER BY price DESC\nLIMIT 1;",
+      "difficulty": "easy",
+      "question": "Show the order_id, order_item_id and price of the most expensive order item.",
+      "passed": true,
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT order_id, order_item_id, price\nFROM olist_order_items_dataset\nORDER BY price DESC\nLIMIT 1;",
       "gold_sql": "SELECT order_id, order_item_id, price FROM olist_order_items_dataset ORDER BY price DESC LIMIT 1;",
-      "passed": false,
-      "latency_seconds": 22.712,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          "0812eb902a67711a1cb742b3cdaa65ae",
+          1,
+          6735.0
+        ]
+      ],
+      "gold_preview": [
+        [
+          "0812eb902a67711a1cb742b3cdaa65ae",
+          1,
+          6735.0
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 2.875,
+      "tokens_in": 2485,
+      "tokens_out": 146
     },
     {
       "id": "E020",
-      "question": "Show the 5 heaviest products by product weight.",
-      "generated_sql": "SELECT product_id, product_weight_g\nFROM olist_products_dataset\nORDER BY product_weight_g DESC\nLIMIT 5;",
+      "difficulty": "easy",
+      "question": "Show the 5 heaviest products by product weight (ignore products with no recorded weight).",
+      "passed": true,
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT\n    product_id,\n    product_weight_g\nFROM\n    olist_products_dataset\nWHERE\n    product_weight_g IS NOT NULL\nORDER BY\n    product_weight_g DESC\nLIMIT 5;",
       "gold_sql": "SELECT product_id, product_weight_g FROM olist_products_dataset WHERE product_weight_g IS NOT NULL ORDER BY product_weight_g DESC LIMIT 5;",
-      "passed": false,
-      "latency_seconds": 1.477,
-      "error": null
+      "generated_row_count": 5,
+      "gold_row_count": 5,
+      "generated_preview": [
+        [
+          "26644690fde745fc4654719c3904e1db",
+          40425
+        ],
+        [
+          "d0877f0094337c414d23f5a3c7bad20c",
+          30000
+        ],
+        [
+          "53f92b0474f91fcb5bd188c6a8075c38",
+          30000
+        ],
+        [
+          "ceeba7d5636e59173cc5f484e913db3d",
+          30000
+        ],
+        [
+          "f97ad9066c718a6cef93dfcf253d3e0d",
+          30000
+        ]
+      ],
+      "gold_preview": [
+        [
+          "26644690fde745fc4654719c3904e1db",
+          40425
+        ],
+        [
+          "d0877f0094337c414d23f5a3c7bad20c",
+          30000
+        ],
+        [
+          "53f92b0474f91fcb5bd188c6a8075c38",
+          30000
+        ],
+        [
+          "ceeba7d5636e59173cc5f484e913db3d",
+          30000
+        ],
+        [
+          "f97ad9066c718a6cef93dfcf253d3e0d",
+          30000
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 18.619,
+      "tokens_in": 2486,
+      "tokens_out": 190
     },
     {
       "id": "M001",
+      "difficulty": "medium",
       "question": "How many orders has each customer placed?",
-      "generated_sql": "SELECT\n    c.customer_id,\n    c.customer_unique_id,\n    COUNT(o.order_id) AS order_count\nFROM\n    olist_customers_dataset AS c\nLEFT JOIN\n    olist_orders_dataset AS o\n    ON c.customer_id = o.customer_id\nGROUP BY\n    c.customer_id,\n    c.customer_unique_id\nORDER BY\n    order_count DESC;",
-      "gold_sql": "SELECT c.customer_unique_id, COUNT(o.order_id) AS total_orders FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id GROUP BY c.customer_unique_id ORDER BY total_orders DESC;",
       "passed": false,
-      "latency_seconds": 17.741,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT c.customer_id,\n       COUNT(o.order_id) AS orders_placed\nFROM olist_customers_dataset AS c\nLEFT JOIN olist_orders_dataset AS o\n       ON c.customer_id = o.customer_id\nGROUP BY c.customer_id\nORDER BY orders_placed DESC;",
+      "gold_sql": "SELECT c.customer_unique_id, COUNT(o.order_id) AS total_orders FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id GROUP BY c.customer_unique_id ORDER BY total_orders DESC;",
+      "generated_row_count": 99441,
+      "gold_row_count": 96096,
+      "generated_preview": [
+        [
+          "00012a2ce6f8dcda20d059ce98491703",
+          1
+        ],
+        [
+          "000161a058600d5901f007fab4c27140",
+          1
+        ],
+        [
+          "0001fd6190edaaf884bcaf3d49edf079",
+          1
+        ],
+        [
+          "0002414f95344307404f0ace7a26f1d5",
+          1
+        ],
+        [
+          "000379cdec625522490c315e70c7a9fb",
+          1
+        ]
+      ],
+      "gold_preview": [
+        [
+          "8d50f5eadf50201ccdcedfb9e2ac8455",
+          17
+        ],
+        [
+          "3e43e6105506432c953e165fb2acf44c",
+          9
+        ],
+        [
+          "1b6c7548a2a1f9037c1fd3ddfed95f33",
+          7
+        ],
+        [
+          "6469f99c1f9dfae7733b25662e7f1782",
+          7
+        ],
+        [
+          "ca77025e7201e3b30c44b472ff346268",
+          7
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 22.623,
+      "tokens_in": 2476,
+      "tokens_out": 260
     },
     {
       "id": "M002",
+      "difficulty": "medium",
       "question": "What is the total spending of each customer?",
-      "generated_sql": "SELECT\n    c.customer_id,\n    SUM(p.payment_value) AS total_spending\nFROM\n    olist_customers_dataset AS c\nJOIN\n    olist_orders_dataset AS o\n    ON c.customer_id = o.customer_id\nJOIN\n    olist_order_payments_dataset AS p\n    ON o.order_id = p.order_id\nGROUP BY\n    c.customer_id\nORDER BY\n    total_spending DESC;",
-      "gold_sql": "SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id ORDER BY total_spending DESC;",
       "passed": false,
-      "latency_seconds": 3.89,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT o.customer_id,\n       SUM(p.payment_value) AS total_spending\nFROM olist_orders_dataset o\nJOIN olist_order_payments_dataset p\n  ON o.order_id = p.order_id\nGROUP BY o.customer_id\nORDER BY total_spending DESC;",
+      "gold_sql": "SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id ORDER BY total_spending DESC;",
+      "generated_row_count": 99440,
+      "gold_row_count": 96095,
+      "generated_preview": [
+        [
+          "1617b1357756262bfa56ab541c47bc16",
+          13664.08
+        ],
+        [
+          "ec5b2ba62e574342386871631fafd3fc",
+          7274.88
+        ],
+        [
+          "c6e2731c5b391845f6800c97401a43a9",
+          6929.31
+        ],
+        [
+          "f48d464a0baaea338cb25f816991ab1f",
+          6922.21
+        ],
+        [
+          "3fd6777bbce08a352fddd04e4a7cc8f6",
+          6726.66
+        ]
+      ],
+      "gold_preview": [
+        [
+          "0a0a92112bd4c708ca5fde585afaa872",
+          13664.08
+        ],
+        [
+          "46450c74a0d8c5ca9395da1daac6c120",
+          9553.02
+        ],
+        [
+          "da122df9eeddfedc1dc1f5349a1a690c",
+          7571.63
+        ],
+        [
+          "763c8b1c9c68a0229c42c9fc6f662b93",
+          7274.88
+        ],
+        [
+          "dc4802a71eae9be1dd28f5d788ceb526",
+          6929.31
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 21.63,
+      "tokens_in": 2477,
+      "tokens_out": 347
     },
     {
       "id": "M003",
+      "difficulty": "medium",
       "question": "What is the average order item price for each product?",
-      "generated_sql": "SELECT\n    oi.product_id,\n    AVG(oi.price) AS average_item_price\nFROM\n    olist_order_items_dataset AS oi\nGROUP BY\n    oi.product_id;",
-      "gold_sql": "SELECT product_id, ROUND(AVG(price)::numeric, 2) AS average_price FROM olist_order_items_dataset GROUP BY product_id ORDER BY average_price DESC;",
       "passed": false,
-      "latency_seconds": 6.604,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT\n    product_id,\n    AVG(price) AS average_price\nFROM\n    olist_order_items_dataset\nGROUP BY\n    product_id;",
+      "gold_sql": "SELECT product_id, ROUND(AVG(price)::numeric, 2) AS average_price FROM olist_order_items_dataset GROUP BY product_id ORDER BY average_price DESC;",
+      "generated_row_count": 32951,
+      "gold_row_count": 32951,
+      "generated_preview": [
+        [
+          "027293c3b6d9e221268d9d6a5ffe5d0b",
+          699.99
+        ],
+        [
+          "9ad4fb75641c9a71f995a06d0386a6f9",
+          62.0
+        ],
+        [
+          "5ed2407e517ceac8615bb4d1ea238fe6",
+          22.99
+        ],
+        [
+          "8e630a6101b33d99671d79b67b87052d",
+          599.0
+        ],
+        [
+          "fba6f88e10230dd0ba718aec962064ae",
+          18.0
+        ]
+      ],
+      "gold_preview": [
+        [
+          "489ae2aa008f021502940f251d4cce7f",
+          6735.0
+        ],
+        [
+          "69c590f7ffc7bf8db97190b6cb6ed62e",
+          6729.0
+        ],
+        [
+          "1bdf5e6731585cf01aa8169c7028d6ad",
+          6499.0
+        ],
+        [
+          "a6492cc69376c469ab6f61d8f44de961",
+          4799.0
+        ],
+        [
+          "c3ed642d592594bb648ff4a04cee2747",
+          4690.0
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 20.07,
+      "tokens_in": 2479,
+      "tokens_out": 135
     },
     {
       "id": "M004",
+      "difficulty": "medium",
       "question": "Show the number of products in each product category.",
-      "generated_sql": "SELECT p.product_category_name AS category_pt,\n       t.product_category_name_english AS category_en,\n       COUNT(*) AS product_count\nFROM olist_products_dataset p\nLEFT JOIN product_category_name_translation t\n  ON p.product_category_name = t.product_category_name\nGROUP BY p.product_category_name, t.product_category_name_english\nORDER BY product_count DESC;",
+      "passed": true,
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT\n    p.product_category_name,\n    COUNT(*) AS product_count\nFROM\n    olist_products_dataset AS p\nGROUP BY\n    p.product_category_name\nORDER BY\n    product_count DESC;",
       "gold_sql": "SELECT product_category_name, COUNT(*) AS product_count FROM olist_products_dataset GROUP BY product_category_name ORDER BY product_count DESC;",
-      "passed": false,
-      "latency_seconds": 24.167,
-      "error": null
+      "generated_row_count": 74,
+      "gold_row_count": 74,
+      "generated_preview": [
+        [
+          "cama_mesa_banho",
+          3029
+        ],
+        [
+          "esporte_lazer",
+          2867
+        ],
+        [
+          "moveis_decoracao",
+          2657
+        ],
+        [
+          "beleza_saude",
+          2444
+        ],
+        [
+          "utilidades_domesticas",
+          2335
+        ]
+      ],
+      "gold_preview": [
+        [
+          "cama_mesa_banho",
+          3029
+        ],
+        [
+          "esporte_lazer",
+          2867
+        ],
+        [
+          "moveis_decoracao",
+          2657
+        ],
+        [
+          "beleza_saude",
+          2444
+        ],
+        [
+          "utilidades_domesticas",
+          2335
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 1.075,
+      "tokens_in": 2478,
+      "tokens_out": 177
     },
     {
       "id": "M005",
+      "difficulty": "medium",
       "question": "What is the total revenue generated by each seller?",
+      "passed": false,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT\n    oi.seller_id,\n    SUM(oi.price + oi.freight_value) AS total_revenue\nFROM\n    olist_order_items_dataset AS oi\nGROUP BY\n    oi.seller_id\nORDER BY\n    total_revenue DESC;",
       "gold_sql": "SELECT s.seller_id, SUM(oi.price) AS total_revenue FROM olist_sellers_dataset s JOIN olist_order_items_dataset oi ON s.seller_id = oi.seller_id GROUP BY s.seller_id ORDER BY total_revenue DESC;",
-      "passed": false,
-      "latency_seconds": 5.361,
-      "error": null
+      "generated_row_count": 3095,
+      "gold_row_count": 3095,
+      "generated_preview": [
+        [
+          "4869f7a5dfa277a7dca6462dcf3b52b2",
+          249640.7
+        ],
+        [
+          "7c67e1448b00f6e969d365cea6b010ab",
+          239536.44
+        ],
+        [
+          "53243585a1d6dc2643021fd1853d8905",
+          235856.68
+        ],
+        [
+          "4a3ca9315b744ce9f8e9374361493884",
+          235539.96
+        ],
+        [
+          "fa1c13f2614d7b5c4749cbc52fecda94",
+          204084.73
+        ]
+      ],
+      "gold_preview": [
+        [
+          "4869f7a5dfa277a7dca6462dcf3b52b2",
+          229472.63
+        ],
+        [
+          "53243585a1d6dc2643021fd1853d8905",
+          222776.05
+        ],
+        [
+          "4a3ca9315b744ce9f8e9374361493884",
+          200472.92
+        ],
+        [
+          "fa1c13f2614d7b5c4749cbc52fecda94",
+          194042.03
+        ],
+        [
+          "7c67e1448b00f6e969d365cea6b010ab",
+          187923.89
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 21.047,
+      "tokens_in": 2478,
+      "tokens_out": 224
     },
     {
       "id": "M006",
+      "difficulty": "medium",
       "question": "How many orders are there for each order status?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT\n    order_status,\n    COUNT(*) AS order_count\nFROM\n    olist_orders_dataset\nGROUP BY\n    order_status\nORDER BY\n    order_count DESC;",
       "gold_sql": "SELECT order_status, COUNT(*) AS order_count FROM olist_orders_dataset GROUP BY order_status ORDER BY order_count DESC;",
-      "passed": true,
-      "latency_seconds": 2.51,
-      "error": null
+      "generated_row_count": 8,
+      "gold_row_count": 8,
+      "generated_preview": [
+        [
+          "delivered",
+          96478
+        ],
+        [
+          "shipped",
+          1107
+        ],
+        [
+          "canceled",
+          625
+        ],
+        [
+          "unavailable",
+          609
+        ],
+        [
+          "invoiced",
+          314
+        ]
+      ],
+      "gold_preview": [
+        [
+          "delivered",
+          96478
+        ],
+        [
+          "shipped",
+          1107
+        ],
+        [
+          "canceled",
+          625
+        ],
+        [
+          "unavailable",
+          609
+        ],
+        [
+          "invoiced",
+          314
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 20.224,
+      "tokens_in": 2478,
+      "tokens_out": 97
     },
     {
       "id": "M007",
+      "difficulty": "medium",
       "question": "What is the average review score for each order status?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT\n    o.order_status,\n    AVG(r.review_score) AS average_review_score\nFROM\n    olist_orders_dataset AS o\nJOIN\n    olist_order_reviews_dataset AS r\n    ON o.order_id = r.order_id\nGROUP BY\n    o.order_status\nORDER BY\n    o.order_status;",
       "gold_sql": "SELECT o.order_status, ROUND(AVG(r.review_score)::numeric, 2) AS average_review_score FROM olist_orders_dataset o JOIN olist_order_reviews_dataset r ON o.order_id = r.order_id GROUP BY o.order_status ORDER BY average_review_score DESC;",
-      "passed": false,
-      "latency_seconds": 8.099,
-      "error": null
+      "generated_row_count": 8,
+      "gold_row_count": 8,
+      "generated_preview": [
+        [
+          "approved",
+          2.5
+        ],
+        [
+          "canceled",
+          1.8111658456486044
+        ],
+        [
+          "created",
+          2.3333333333333335
+        ],
+        [
+          "delivered",
+          4.155716524320005
+        ],
+        [
+          "invoiced",
+          1.6613418530351438
+        ]
+      ],
+      "gold_preview": [
+        [
+          "delivered",
+          4.16
+        ],
+        [
+          "approved",
+          2.5
+        ],
+        [
+          "created",
+          2.33
+        ],
+        [
+          "shipped",
+          2.01
+        ],
+        [
+          "canceled",
+          1.81
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 19.911,
+      "tokens_in": 2479,
+      "tokens_out": 216
     },
     {
       "id": "M008",
+      "difficulty": "medium",
       "question": "How much total freight value was charged by each seller?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT\n    oi.seller_id,\n    SUM(oi.freight_value) AS total_freight_value\nFROM\n    olist_order_items_dataset AS oi\nGROUP BY\n    oi.seller_id\nORDER BY\n    total_freight_value DESC;",
       "gold_sql": "SELECT seller_id, ROUND(SUM(freight_value)::numeric, 2) AS total_freight FROM olist_order_items_dataset GROUP BY seller_id ORDER BY total_freight DESC;",
-      "passed": true,
-      "latency_seconds": 3.399,
-      "error": null
+      "generated_row_count": 3095,
+      "gold_row_count": 3095,
+      "generated_preview": [
+        [
+          "7c67e1448b00f6e969d365cea6b010ab",
+          51612.55
+        ],
+        [
+          "1f50f920176fa81dab994f9023523100",
+          35165.77
+        ],
+        [
+          "4a3ca9315b744ce9f8e9374361493884",
+          35067.04
+        ],
+        [
+          "1025f0e2d44d7041d6cf58b6550e0bfa",
+          33892.14
+        ],
+        [
+          "a1043bafd471dff536d0c462352beb48",
+          31844.09
+        ]
+      ],
+      "gold_preview": [
+        [
+          "7c67e1448b00f6e969d365cea6b010ab",
+          51612.55
+        ],
+        [
+          "1f50f920176fa81dab994f9023523100",
+          35165.77
+        ],
+        [
+          "4a3ca9315b744ce9f8e9374361493884",
+          35067.04
+        ],
+        [
+          "1025f0e2d44d7041d6cf58b6550e0bfa",
+          33892.14
+        ],
+        [
+          "a1043bafd471dff536d0c462352beb48",
+          31844.09
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 3.895,
+      "tokens_in": 2479,
+      "tokens_out": 191
     },
     {
       "id": "M009",
+      "difficulty": "medium",
       "question": "What is the total payment amount for each payment method?",
-      "generated_sql": "SELECT payment_type,\n       SUM(payment_value) AS total_payment_amount\nFROM olist_order_payments_dataset\nGROUP BY payment_type\nORDER BY total_payment_amount DESC;",
-      "gold_sql": "SELECT payment_type, ROUND(SUM(payment_value)::numeric, 2) AS total_payment FROM olist_order_payments_dataset GROUP BY payment_type ORDER BY total_payment DESC;",
       "passed": true,
-      "latency_seconds": 18.951,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT\n    payment_type,\n    SUM(payment_value) AS total_payment_amount\nFROM\n    olist_order_payments_dataset\nGROUP BY\n    payment_type\nORDER BY\n    total_payment_amount DESC;",
+      "gold_sql": "SELECT payment_type, ROUND(SUM(payment_value)::numeric, 2) AS total_payment FROM olist_order_payments_dataset GROUP BY payment_type ORDER BY total_payment DESC;",
+      "generated_row_count": 5,
+      "gold_row_count": 5,
+      "generated_preview": [
+        [
+          "credit_card",
+          12542084.19
+        ],
+        [
+          "boleto",
+          2869361.27
+        ],
+        [
+          "voucher",
+          379436.87
+        ],
+        [
+          "debit_card",
+          217989.79
+        ],
+        [
+          "not_defined",
+          0.0
+        ]
+      ],
+      "gold_preview": [
+        [
+          "credit_card",
+          12542084.19
+        ],
+        [
+          "boleto",
+          2869361.27
+        ],
+        [
+          "voucher",
+          379436.87
+        ],
+        [
+          "debit_card",
+          217989.79
+        ],
+        [
+          "not_defined",
+          0.0
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 2.896,
+      "tokens_in": 2479,
+      "tokens_out": 170
     },
     {
       "id": "M010",
+      "difficulty": "medium",
       "question": "How many orders were placed in each month?",
-      "generated_sql": "SELECT DATE_TRUNC('month', order_purchase_timestamp) AS month,\n       COUNT(*) AS order_count\nFROM olist_orders_dataset\nGROUP BY 1\nORDER BY 1;",
-      "gold_sql": "SELECT DATE_TRUNC('month', order_purchase_timestamp) AS month, COUNT(*) AS order_count FROM olist_orders_dataset GROUP BY DATE_TRUNC('month', order_purchase_timestamp) ORDER BY month;",
       "passed": true,
-      "latency_seconds": 2.639,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT DATE_TRUNC('month', order_purchase_timestamp) AS month,\n       COUNT(*) AS order_count\nFROM olist_orders_dataset\nGROUP BY DATE_TRUNC('month', order_purchase_timestamp)\nORDER BY month;",
+      "gold_sql": "SELECT DATE_TRUNC('month', order_purchase_timestamp) AS month, COUNT(*) AS order_count FROM olist_orders_dataset GROUP BY DATE_TRUNC('month', order_purchase_timestamp) ORDER BY month;",
+      "generated_row_count": 25,
+      "gold_row_count": 25,
+      "generated_preview": [
+        [
+          "2016-09-01T00:00:00",
+          4
+        ],
+        [
+          "2016-10-01T00:00:00",
+          324
+        ],
+        [
+          "2016-12-01T00:00:00",
+          1
+        ],
+        [
+          "2017-01-01T00:00:00",
+          800
+        ],
+        [
+          "2017-02-01T00:00:00",
+          1780
+        ]
+      ],
+      "gold_preview": [
+        [
+          "2016-09-01T00:00:00",
+          4
+        ],
+        [
+          "2016-10-01T00:00:00",
+          324
+        ],
+        [
+          "2016-12-01T00:00:00",
+          1
+        ],
+        [
+          "2017-01-01T00:00:00",
+          800
+        ],
+        [
+          "2017-02-01T00:00:00",
+          1780
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 17.413,
+      "tokens_in": 2477,
+      "tokens_out": 173
     },
     {
       "id": "M011",
+      "difficulty": "medium",
       "question": "What is the total item revenue generated in each month?",
-      "generated_sql": "SELECT date_trunc('month', o.order_purchase_timestamp) AS month,\n       SUM(oi.price) AS total_item_revenue\nFROM olist_order_items_dataset oi\nJOIN olist_orders_dataset o ON oi.order_id = o.order_id\nGROUP BY 1\nORDER BY 1;",
+      "passed": false,
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT to_char(date_trunc('month', o.order_purchase_timestamp), 'YYYY-MM') AS month,\n       SUM(oi.price) AS total_item_revenue\nFROM olist_order_items_dataset oi\nJOIN olist_orders_dataset o ON oi.order_id = o.order_id\nGROUP BY month\nORDER BY month;",
       "gold_sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, ROUND(SUM(oi.price)::numeric, 2) AS monthly_revenue FROM olist_orders_dataset o JOIN olist_order_items_dataset oi ON o.order_id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp) ORDER BY month;",
-      "passed": true,
-      "latency_seconds": 19.681,
-      "error": null
+      "generated_row_count": 24,
+      "gold_row_count": 24,
+      "generated_preview": [
+        [
+          "2016-09",
+          267.36
+        ],
+        [
+          "2016-10",
+          49507.66
+        ],
+        [
+          "2016-12",
+          10.9
+        ],
+        [
+          "2017-01",
+          120312.87
+        ],
+        [
+          "2017-02",
+          247303.02
+        ]
+      ],
+      "gold_preview": [
+        [
+          "2016-09-01T00:00:00",
+          267.36
+        ],
+        [
+          "2016-10-01T00:00:00",
+          49507.66
+        ],
+        [
+          "2016-12-01T00:00:00",
+          10.9
+        ],
+        [
+          "2017-01-01T00:00:00",
+          120312.87
+        ],
+        [
+          "2017-02-01T00:00:00",
+          247303.02
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 21.589,
+      "tokens_in": 2479,
+      "tokens_out": 312
     },
     {
       "id": "M012",
-      "question": "Which cities have the highest number of customers?",
-      "generated_sql": "SELECT\n    customer_city,\n    COUNT(*) AS customer_count\nFROM\n    olist_customers_dataset\nGROUP BY\n    customer_city\nORDER BY\n    customer_count DESC;",
+      "difficulty": "medium",
+      "question": "Show the top 10 cities by number of customers.",
+      "passed": true,
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT customer_city, COUNT(DISTINCT customer_id) AS customer_count\nFROM olist_customers_dataset\nGROUP BY customer_city\nORDER BY customer_count DESC\nLIMIT 10;",
       "gold_sql": "SELECT customer_city, COUNT(*) AS customer_count FROM olist_customers_dataset GROUP BY customer_city ORDER BY customer_count DESC LIMIT 10;",
-      "passed": false,
-      "latency_seconds": 19.789,
-      "error": null
+      "generated_row_count": 10,
+      "gold_row_count": 10,
+      "generated_preview": [
+        [
+          "sao paulo",
+          15540
+        ],
+        [
+          "rio de janeiro",
+          6882
+        ],
+        [
+          "belo horizonte",
+          2773
+        ],
+        [
+          "brasilia",
+          2131
+        ],
+        [
+          "curitiba",
+          1521
+        ]
+      ],
+      "gold_preview": [
+        [
+          "sao paulo",
+          15540
+        ],
+        [
+          "rio de janeiro",
+          6882
+        ],
+        [
+          "belo horizonte",
+          2773
+        ],
+        [
+          "brasilia",
+          2131
+        ],
+        [
+          "curitiba",
+          1521
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 18.725,
+      "tokens_in": 2479,
+      "tokens_out": 144
     },
     {
       "id": "M013",
+      "difficulty": "medium",
       "question": "Find the top 10 sellers based on the number of items sold.",
-      "generated_sql": "SELECT seller_id,\n       COUNT(*) AS items_sold\nFROM olist_order_items_dataset\nGROUP BY seller_id\nORDER BY items_sold DESC\nLIMIT 10;",
-      "gold_sql": "SELECT seller_id, COUNT(*) AS items_sold FROM olist_order_items_dataset GROUP BY seller_id ORDER BY items_sold DESC LIMIT 10;",
       "passed": true,
-      "latency_seconds": 2.49,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT oi.seller_id,\n       COUNT(*) AS items_sold\nFROM olist_order_items_dataset oi\nGROUP BY oi.seller_id\nORDER BY items_sold DESC\nLIMIT 10;",
+      "gold_sql": "SELECT seller_id, COUNT(*) AS items_sold FROM olist_order_items_dataset GROUP BY seller_id ORDER BY items_sold DESC LIMIT 10;",
+      "generated_row_count": 10,
+      "gold_row_count": 10,
+      "generated_preview": [
+        [
+          "6560211a19b47992c3666cc44a7e94c0",
+          2033
+        ],
+        [
+          "4a3ca9315b744ce9f8e9374361493884",
+          1987
+        ],
+        [
+          "1f50f920176fa81dab994f9023523100",
+          1931
+        ],
+        [
+          "cc419e0650a3c5ba77189a1882b7556a",
+          1775
+        ],
+        [
+          "da8622b14eb17ae2831f4ac5b9dab84a",
+          1551
+        ]
+      ],
+      "gold_preview": [
+        [
+          "6560211a19b47992c3666cc44a7e94c0",
+          2033
+        ],
+        [
+          "4a3ca9315b744ce9f8e9374361493884",
+          1987
+        ],
+        [
+          "1f50f920176fa81dab994f9023523100",
+          1931
+        ],
+        [
+          "cc419e0650a3c5ba77189a1882b7556a",
+          1775
+        ],
+        [
+          "da8622b14eb17ae2831f4ac5b9dab84a",
+          1551
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 3.62,
+      "tokens_in": 2482,
+      "tokens_out": 191
     },
     {
       "id": "M014",
-      "question": "What is the average freight value for each product category?",
-      "generated_sql": "SELECT p.product_category_name,\n       AVG(oi.freight_value) AS avg_freight_value\nFROM olist_order_items_dataset oi\nJOIN olist_products_dataset p\n  ON oi.product_id = p.product_id\nGROUP BY p.product_category_name\nORDER BY avg_freight_value DESC;",
-      "gold_sql": "SELECT p.product_category_name, ROUND(AVG(oi.freight_value)::numeric, 2) AS average_freight FROM olist_products_dataset p JOIN olist_order_items_dataset oi ON p.product_id = oi.product_id GROUP BY p.product_category_name ORDER BY average_freight DESC;",
+      "difficulty": "medium",
+      "question": "What is the average freight value for each product category? Use the original category name from the products table.",
       "passed": false,
-      "latency_seconds": 19.581,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT\n    p.product_category_name,\n    AVG(oi.freight_value) AS average_freight_value\nFROM\n    olist_order_items_dataset oi\nJOIN\n    olist_products_dataset p\n    ON oi.product_id = p.product_id\nGROUP BY\n    p.product_category_name;",
+      "gold_sql": "SELECT p.product_category_name, ROUND(AVG(oi.freight_value)::numeric, 2) AS average_freight FROM olist_products_dataset p JOIN olist_order_items_dataset oi ON p.product_id = oi.product_id GROUP BY p.product_category_name ORDER BY average_freight DESC;",
+      "generated_row_count": 74,
+      "gold_row_count": 74,
+      "generated_preview": [
+        [
+          "climatizacao",
+          22.724680134680135
+        ],
+        [
+          "livros_importados",
+          12.830833333333333
+        ],
+        [
+          null,
+          17.573181534622584
+        ],
+        [
+          "artigos_de_natal",
+          21.10653594771242
+        ],
+        [
+          "livros_tecnicos",
+          16.041423220973783
+        ]
+      ],
+      "gold_preview": [
+        [
+          "pcs",
+          48.45
+        ],
+        [
+          "eletrodomesticos_2",
+          44.54
+        ],
+        [
+          "moveis_colchao_e_estofado",
+          42.91
+        ],
+        [
+          "moveis_cozinha_area_de_servico_jantar_e_jardim",
+          42.7
+        ],
+        [
+          "moveis_quarto",
+          42.5
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 1.063,
+      "tokens_in": 2489,
+      "tokens_out": 223
     },
     {
       "id": "M015",
+      "difficulty": "medium",
       "question": "How many orders were delivered in each customer state?",
+      "passed": false,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT c.customer_state,\n       COUNT(DISTINCT o.order_id) AS delivered_orders\nFROM olist_orders_dataset o\nJOIN olist_customers_dataset c\n  ON o.customer_id = c.customer_id\nWHERE o.order_delivered_customer_date IS NOT NULL\nGROUP BY c.customer_state\nORDER BY delivered_orders DESC;",
       "gold_sql": "SELECT c.customer_state, COUNT(*) AS delivered_orders FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id WHERE o.order_status = 'delivered' GROUP BY c.customer_state ORDER BY delivered_orders DESC;",
-      "passed": false,
-      "latency_seconds": 20.823,
-      "error": null
+      "generated_row_count": 27,
+      "gold_row_count": 27,
+      "generated_preview": [
+        [
+          "SP",
+          40495
+        ],
+        [
+          "RJ",
+          12353
+        ],
+        [
+          "MG",
+          11355
+        ],
+        [
+          "RS",
+          5344
+        ],
+        [
+          "PR",
+          4923
+        ]
+      ],
+      "gold_preview": [
+        [
+          "SP",
+          40501
+        ],
+        [
+          "RJ",
+          12350
+        ],
+        [
+          "MG",
+          11354
+        ],
+        [
+          "RS",
+          5345
+        ],
+        [
+          "PR",
+          4923
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 22.793,
+      "tokens_in": 2478,
+      "tokens_out": 204
     },
     {
       "id": "M016",
+      "difficulty": "medium",
       "question": "What is the average number of payment installments for each payment method?",
-      "generated_sql": "SELECT payment_type,\n       AVG(payment_installments) AS average_installments\nFROM olist_order_payments_dataset\nGROUP BY payment_type\nORDER BY average_installments DESC;",
+      "passed": true,
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT\n    payment_type,\n    AVG(payment_installments) AS average_installments\nFROM\n    olist_order_payments_dataset\nGROUP BY\n    payment_type;",
       "gold_sql": "SELECT payment_type, ROUND(AVG(payment_installments)::numeric, 2) AS average_installments FROM olist_order_payments_dataset GROUP BY payment_type ORDER BY average_installments DESC;",
-      "passed": false,
-      "latency_seconds": 20.176,
-      "error": null
+      "generated_row_count": 5,
+      "gold_row_count": 5,
+      "generated_preview": [
+        [
+          "not_defined",
+          1.0
+        ],
+        [
+          "boleto",
+          1.0
+        ],
+        [
+          "debit_card",
+          1.0
+        ],
+        [
+          "voucher",
+          1.0
+        ],
+        [
+          "credit_card",
+          3.507155413763917
+        ]
+      ],
+      "gold_preview": [
+        [
+          "credit_card",
+          3.51
+        ],
+        [
+          "not_defined",
+          1.0
+        ],
+        [
+          "boleto",
+          1.0
+        ],
+        [
+          "debit_card",
+          1.0
+        ],
+        [
+          "voucher",
+          1.0
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 19.061,
+      "tokens_in": 2481,
+      "tokens_out": 110
     },
     {
       "id": "M017",
+      "difficulty": "medium",
       "question": "Find product categories with more than 1000 products.",
-      "generated_sql": "SELECT product_category_name,\n       COUNT(*) AS product_count\nFROM olist_products_dataset\nGROUP BY product_category_name\nHAVING COUNT(*) > 1000;",
+      "passed": false,
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT p.product_category_name,\n       t.product_category_name_english,\n       COUNT(*) AS product_count\nFROM olist_products_dataset p\nLEFT JOIN product_category_name_translation t\n  ON p.product_category_name = t.product_category_name\nGROUP BY p.product_category_name, t.product_category_name_english\nHAVING COUNT(*) > 1000\nORDER BY product_count DESC;",
       "gold_sql": "SELECT product_category_name, COUNT(*) AS product_count FROM olist_products_dataset GROUP BY product_category_name HAVING COUNT(*) > 1000 ORDER BY product_count DESC;",
-      "passed": true,
-      "latency_seconds": 2.501,
-      "error": null
+      "generated_row_count": 10,
+      "gold_row_count": 10,
+      "generated_preview": [
+        [
+          "cama_mesa_banho",
+          "bed_bath_table",
+          3029
+        ],
+        [
+          "esporte_lazer",
+          "sports_leisure",
+          2867
+        ],
+        [
+          "moveis_decoracao",
+          "furniture_decor",
+          2657
+        ],
+        [
+          "beleza_saude",
+          "health_beauty",
+          2444
+        ],
+        [
+          "utilidades_domesticas",
+          "housewares",
+          2335
+        ]
+      ],
+      "gold_preview": [
+        [
+          "cama_mesa_banho",
+          3029
+        ],
+        [
+          "esporte_lazer",
+          2867
+        ],
+        [
+          "moveis_decoracao",
+          2657
+        ],
+        [
+          "beleza_saude",
+          2444
+        ],
+        [
+          "utilidades_domesticas",
+          2335
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 2.457,
+      "tokens_in": 2479,
+      "tokens_out": 274
     },
     {
       "id": "M018",
+      "difficulty": "medium",
       "question": "What is the average delivery time in days for delivered orders?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT AVG(EXTRACT(EPOCH FROM (order_delivered_customer_date - order_purchase_timestamp)) / 86400) AS avg_delivery_days\nFROM olist_orders_dataset\nWHERE order_delivered_customer_date IS NOT NULL\n  AND order_status = 'delivered';",
       "gold_sql": "SELECT ROUND(AVG(EXTRACT(EPOCH FROM (order_delivered_customer_date - order_purchase_timestamp)) / 86400)::numeric, 2) AS average_delivery_days FROM olist_orders_dataset WHERE order_status = 'delivered' AND order_delivered_customer_date IS NOT NULL AND order_purchase_timestamp IS NOT NULL;",
-      "passed": false,
-      "latency_seconds": 2.384,
-      "error": null
+      "generated_row_count": 1,
+      "gold_row_count": 1,
+      "generated_preview": [
+        [
+          12.558217098051976
+        ]
+      ],
+      "gold_preview": [
+        [
+          12.56
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 3.363,
+      "tokens_in": 2480,
+      "tokens_out": 259
     },
     {
       "id": "M019",
+      "difficulty": "medium",
       "question": "How many reviews does each review score have?",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT\n    review_score,\n    COUNT(*) AS review_count\nFROM\n    olist_order_reviews_dataset\nGROUP BY\n    review_score\nORDER BY\n    review_score;",
       "gold_sql": "SELECT review_score, COUNT(*) AS review_count FROM olist_order_reviews_dataset GROUP BY review_score ORDER BY review_score;",
-      "passed": true,
-      "latency_seconds": 2.383,
-      "error": null
+      "generated_row_count": 5,
+      "gold_row_count": 5,
+      "generated_preview": [
+        [
+          1,
+          11424
+        ],
+        [
+          2,
+          3151
+        ],
+        [
+          3,
+          8179
+        ],
+        [
+          4,
+          19142
+        ],
+        [
+          5,
+          57328
+        ]
+      ],
+      "gold_preview": [
+        [
+          1,
+          11424
+        ],
+        [
+          2,
+          3151
+        ],
+        [
+          3,
+          8179
+        ],
+        [
+          4,
+          19142
+        ],
+        [
+          5,
+          57328
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 3.107,
+      "tokens_in": 2477,
+      "tokens_out": 104
     },
     {
       "id": "M020",
+      "difficulty": "medium",
       "question": "Find the top 10 product categories by total item revenue, showing their English names where available.",
-      "generated_sql": "SELECT COALESCE(t.product_category_name_english, p.product_category_name) AS category_name,\n       SUM(oi.price) AS total_revenue\nFROM olist_order_items_dataset oi\nJOIN olist_products_dataset p\n  ON oi.product_id = p.product_id\nLEFT JOIN product_category_name_translation t\n  ON p.product_category_name = t.product_category_name\nGROUP BY COALESCE(t.product_category_name_english, p.product_category_name)\nORDER BY total_revenue DESC\nLIMIT 10;",
-      "gold_sql": "SELECT COALESCE(t.product_category_name_english, p.product_category_name) AS category_name, ROUND(SUM(oi.price)::numeric, 2) AS total_revenue FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id LEFT JOIN product_category_name_translation t ON p.product_category_name = t.product_category_name GROUP BY COALESCE(t.product_category_name_english, p.product_category_name) ORDER BY total_revenue DESC LIMIT 10;",
       "passed": true,
-      "latency_seconds": 2.778,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT\n    COALESCE(pct.product_category_name_english, p.product_category_name) AS category_name,\n    SUM(oi.price) AS total_revenue\nFROM olist_order_items_dataset oi\nJOIN olist_products_dataset p\n    ON oi.product_id = p.product_id\nLEFT JOIN product_category_name_translation pct\n    ON p.product_category_name = pct.product_category_name\nGROUP BY category_name\nORDER BY total_revenue DESC\nLIMIT 10;",
+      "gold_sql": "SELECT COALESCE(t.product_category_name_english, p.product_category_name) AS category_name, ROUND(SUM(oi.price)::numeric, 2) AS total_revenue FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id LEFT JOIN product_category_name_translation t ON p.product_category_name = t.product_category_name GROUP BY COALESCE(t.product_category_name_english, p.product_category_name) ORDER BY total_revenue DESC LIMIT 10;",
+      "generated_row_count": 10,
+      "gold_row_count": 10,
+      "generated_preview": [
+        [
+          "health_beauty",
+          1258681.34
+        ],
+        [
+          "watches_gifts",
+          1205005.68
+        ],
+        [
+          "bed_bath_table",
+          1036988.68
+        ],
+        [
+          "sports_leisure",
+          988048.97
+        ],
+        [
+          "computers_accessories",
+          911954.32
+        ]
+      ],
+      "gold_preview": [
+        [
+          "health_beauty",
+          1258681.34
+        ],
+        [
+          "watches_gifts",
+          1205005.68
+        ],
+        [
+          "bed_bath_table",
+          1036988.68
+        ],
+        [
+          "sports_leisure",
+          988048.97
+        ],
+        [
+          "computers_accessories",
+          911954.32
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 2.49,
+      "tokens_in": 2487,
+      "tokens_out": 340
     },
     {
       "id": "H001",
+      "difficulty": "hard",
       "question": "Find the top 3 customers by total spending, including their customer IDs and total spending.",
-      "generated_sql": "SELECT o.customer_id,\n       SUM(p.payment_value) AS total_spending\nFROM olist_orders_dataset AS o\nJOIN olist_order_payments_dataset AS p\n  ON o.order_id = p.order_id\nGROUP BY o.customer_id\nORDER BY total_spending DESC\nLIMIT 3;",
-      "gold_sql": "SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id ORDER BY total_spending DESC LIMIT 3;",
       "passed": false,
-      "latency_seconds": 5.843,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "WITH order_totals AS (\n    SELECT\n        order_id,\n        SUM(payment_value) AS order_spent\n    FROM olist_order_payments_dataset\n    GROUP BY order_id\n)\nSELECT\n    c.customer_id,\n    SUM(ot.order_spent) AS total_spending\nFROM olist_customers_dataset c\nJOIN olist_orders_dataset o\n    ON c.customer_id = o.customer_id\nJOIN order_totals ot\n    ON o.order_id = ot.order_id\nGROUP BY c.customer_id\nORDER BY total_spending DESC\nLIMIT 3;",
+      "gold_sql": "SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id ORDER BY total_spending DESC LIMIT 3;",
+      "generated_row_count": 3,
+      "gold_row_count": 3,
+      "generated_preview": [
+        [
+          "1617b1357756262bfa56ab541c47bc16",
+          13664.08
+        ],
+        [
+          "ec5b2ba62e574342386871631fafd3fc",
+          7274.88
+        ],
+        [
+          "c6e2731c5b391845f6800c97401a43a9",
+          6929.31
+        ]
+      ],
+      "gold_preview": [
+        [
+          "0a0a92112bd4c708ca5fde585afaa872",
+          13664.08
+        ],
+        [
+          "46450c74a0d8c5ca9395da1daac6c120",
+          9553.02
+        ],
+        [
+          "da122df9eeddfedc1dc1f5349a1a690c",
+          7571.63
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 4.6,
+      "tokens_in": 2486,
+      "tokens_out": 337
     },
     {
       "id": "H002",
+      "difficulty": "hard",
       "question": "Find the average order value for each month based on the order purchase date.",
+      "passed": true,
+      "route": null,
+      "retries": 0,
       "generated_sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month,\n       AVG(p.order_total) AS average_order_value\nFROM olist_orders_dataset o\nJOIN (\n    SELECT order_id, SUM(payment_value) AS order_total\n    FROM olist_order_payments_dataset\n    GROUP BY order_id\n) p ON o.order_id = p.order_id\nGROUP BY month\nORDER BY month;",
       "gold_sql": "SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, ROUND(AVG(order_totals.total_payment)::numeric, 2) AS average_order_value FROM olist_orders_dataset o JOIN (SELECT order_id, SUM(payment_value) AS total_payment FROM olist_order_payments_dataset GROUP BY order_id) order_totals ON o.order_id = order_totals.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp) ORDER BY month;",
-      "passed": false,
-      "latency_seconds": 1.411,
-      "error": null
+      "generated_row_count": 25,
+      "gold_row_count": 25,
+      "generated_preview": [
+        [
+          "2016-09-01T00:00:00",
+          84.08
+        ],
+        [
+          "2016-10-01T00:00:00",
+          182.37802469135804
+        ],
+        [
+          "2016-12-01T00:00:00",
+          19.62
+        ],
+        [
+          "2017-01-01T00:00:00",
+          173.11005
+        ],
+        [
+          "2017-02-01T00:00:00",
+          163.99326404494383
+        ]
+      ],
+      "gold_preview": [
+        [
+          "2016-09-01T00:00:00",
+          84.08
+        ],
+        [
+          "2016-10-01T00:00:00",
+          182.38
+        ],
+        [
+          "2016-12-01T00:00:00",
+          19.62
+        ],
+        [
+          "2017-01-01T00:00:00",
+          173.11
+        ],
+        [
+          "2017-02-01T00:00:00",
+          163.99
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 2.953,
+      "tokens_in": 2483,
+      "tokens_out": 333
     },
     {
       "id": "H003",
+      "difficulty": "hard",
       "question": "Rank product categories by total sales revenue.",
-      "generated_sql": "SELECT\n    p.product_category_name,\n    pct.product_category_name_english,\n    SUM(oi.price) AS total_sales,\n    RANK() OVER (ORDER BY SUM(oi.price) DESC) AS rank\nFROM olist_order_items_dataset oi\nJOIN olist_products_dataset p\n    ON oi.product_id = p.product_id\nLEFT JOIN product_category_name_translation pct\n    ON p.product_category_name = pct.product_category_name\nGROUP BY p.product_category_name, pct.product_category_name_english\nORDER BY total_sales DESC;",
-      "gold_sql": "SELECT COALESCE(t.product_category_name_english, p.product_category_name) AS category_name, SUM(oi.price) AS total_revenue, RANK() OVER (ORDER BY SUM(oi.price) DESC) AS revenue_rank FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id LEFT JOIN product_category_name_translation t ON p.product_category_name = t.product_category_name GROUP BY COALESCE(t.product_category_name_english, p.product_category_name) ORDER BY revenue_rank;",
       "passed": false,
-      "latency_seconds": 4.081,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT COALESCE(t.product_category_name_english, p.product_category_name) AS category,\n       SUM(oi.price) AS total_revenue\nFROM olist_order_items_dataset oi\nJOIN olist_products_dataset p\n  ON oi.product_id = p.product_id\nLEFT JOIN product_category_name_translation t\n  ON p.product_category_name = t.product_category_name\nGROUP BY category\nORDER BY total_revenue DESC;",
+      "gold_sql": "SELECT COALESCE(t.product_category_name_english, p.product_category_name) AS category_name, SUM(oi.price) AS total_revenue, RANK() OVER (ORDER BY SUM(oi.price) DESC) AS revenue_rank FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id LEFT JOIN product_category_name_translation t ON p.product_category_name = t.product_category_name GROUP BY COALESCE(t.product_category_name_english, p.product_category_name) ORDER BY revenue_rank;",
+      "generated_row_count": 74,
+      "gold_row_count": 74,
+      "generated_preview": [
+        [
+          "health_beauty",
+          1258681.34
+        ],
+        [
+          "watches_gifts",
+          1205005.68
+        ],
+        [
+          "bed_bath_table",
+          1036988.68
+        ],
+        [
+          "sports_leisure",
+          988048.97
+        ],
+        [
+          "computers_accessories",
+          911954.32
+        ]
+      ],
+      "gold_preview": [
+        [
+          "health_beauty",
+          1258681.34,
+          1
+        ],
+        [
+          "watches_gifts",
+          1205005.68,
+          2
+        ],
+        [
+          "bed_bath_table",
+          1036988.68,
+          3
+        ],
+        [
+          "sports_leisure",
+          988048.97,
+          4
+        ],
+        [
+          "computers_accessories",
+          911954.32,
+          5
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 3.647,
+      "tokens_in": 2476,
+      "tokens_out": 324
     },
     {
       "id": "H004",
+      "difficulty": "hard",
       "question": "Find customers whose total spending is greater than the average customer spending.",
-      "generated_sql": "WITH customer_spending AS (\n    SELECT c.customer_id,\n           c.customer_unique_id,\n           SUM(p.payment_value) AS total_spending\n    FROM olist_customers_dataset c\n    JOIN olist_orders_dataset o ON c.customer_id = o.customer_id\n    JOIN olist_order_payments_dataset p ON o.order_id = p.order_id\n    GROUP BY c.customer_id, c.customer_unique_id\n),\navg_spending AS (\n    SELECT AVG(total_spending) AS avg_spending\n    FROM customer_spending\n)\nSELECT cs.customer_id,\n       cs.customer_unique_id,\n       cs.total_spending\nFROM customer_spending cs, avg_spending a\nWHERE cs.total_spending > a.avg_spending;",
-      "gold_sql": "WITH customer_spending AS (SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id) SELECT customer_unique_id, total_spending FROM customer_spending WHERE total_spending > (SELECT AVG(total_spending) FROM customer_spending) ORDER BY total_spending DESC;",
       "passed": false,
-      "latency_seconds": 4.496,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "WITH customer_spending AS (\n    SELECT o.customer_id,\n           SUM(p.payment_value) AS total_spending\n    FROM olist_orders_dataset o\n    JOIN olist_order_payments_dataset p\n      ON o.order_id = p.order_id\n    GROUP BY o.customer_id\n)\nSELECT cs.customer_id,\n       cs.total_spending\nFROM customer_spending cs\nWHERE cs.total_spending > (SELECT AVG(total_spending) FROM customer_spending);",
+      "gold_sql": "WITH customer_spending AS (SELECT c.customer_unique_id, SUM(p.payment_value) AS total_spending FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id JOIN olist_order_payments_dataset p ON o.order_id = p.order_id GROUP BY c.customer_unique_id) SELECT customer_unique_id, total_spending FROM customer_spending WHERE total_spending > (SELECT AVG(total_spending) FROM customer_spending) ORDER BY total_spending DESC;",
+      "generated_row_count": 29272,
+      "gold_row_count": 27889,
+      "generated_preview": [
+        [
+          "9e2652c3469d9367573a7659b60a44a1",
+          215.15
+        ],
+        [
+          "42d4a2e8a460728da550948367a9f2d9",
+          207.2
+        ],
+        [
+          "5491f5b2f7ef061ae1fb0b14b0fcb434",
+          198.51
+        ],
+        [
+          "bc45a57dc2dd1214356af83eb57a46f3",
+          317.3
+        ],
+        [
+          "0d8cb40fe23920b0a6078753a31bb617",
+          164.12
+        ]
+      ],
+      "gold_preview": [
+        [
+          "0a0a92112bd4c708ca5fde585afaa872",
+          13664.08
+        ],
+        [
+          "46450c74a0d8c5ca9395da1daac6c120",
+          9553.02
+        ],
+        [
+          "da122df9eeddfedc1dc1f5349a1a690c",
+          7571.63
+        ],
+        [
+          "763c8b1c9c68a0229c42c9fc6f662b93",
+          7274.88
+        ],
+        [
+          "dc4802a71eae9be1dd28f5d788ceb526",
+          6929.31
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 22.915,
+      "tokens_in": 2481,
+      "tokens_out": 442
     },
     {
       "id": "H005",
+      "difficulty": "hard",
       "question": "For each order status, calculate the number of orders and the percentage of all orders.",
-      "generated_sql": "SELECT\n    order_status,\n    COUNT(*) AS order_count,\n    ROUND(100.0 * COUNT(*) / SUM(COUNT(*)) OVER (), 2) AS order_percentage\nFROM olist_orders_dataset\nGROUP BY order_status\nORDER BY order_status;",
-      "gold_sql": "SELECT order_status, COUNT(*) AS order_count, ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS percentage_of_orders FROM olist_orders_dataset GROUP BY order_status ORDER BY order_count DESC;",
       "passed": true,
-      "latency_seconds": 3.619,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT\n    order_status,\n    order_count,\n    ROUND(100.0 * order_count / total_orders, 2) AS percentage_of_total\nFROM (\n    SELECT\n        order_status,\n        COUNT(*) AS order_count,\n        SUM(COUNT(*)) OVER () AS total_orders\n    FROM olist_orders_dataset\n    GROUP BY order_status\n) AS sub\nORDER BY order_status;",
+      "gold_sql": "SELECT order_status, COUNT(*) AS order_count, ROUND(COUNT(*) * 100.0 / SUM(COUNT(*)) OVER (), 2) AS percentage_of_orders FROM olist_orders_dataset GROUP BY order_status ORDER BY order_count DESC;",
+      "generated_row_count": 8,
+      "gold_row_count": 8,
+      "generated_preview": [
+        [
+          "approved",
+          2,
+          0.0
+        ],
+        [
+          "canceled",
+          625,
+          0.63
+        ],
+        [
+          "created",
+          5,
+          0.01
+        ],
+        [
+          "delivered",
+          96478,
+          97.02
+        ],
+        [
+          "invoiced",
+          314,
+          0.32
+        ]
+      ],
+      "gold_preview": [
+        [
+          "delivered",
+          96478,
+          97.02
+        ],
+        [
+          "shipped",
+          1107,
+          1.11
+        ],
+        [
+          "canceled",
+          625,
+          0.63
+        ],
+        [
+          "unavailable",
+          609,
+          0.61
+        ],
+        [
+          "invoiced",
+          314,
+          0.32
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 1.759,
+      "tokens_in": 2485,
+      "tokens_out": 437
     },
     {
       "id": "H006",
-      "question": "Find the top 3 products by revenue within each product category.",
-      "generated_sql": "WITH product_revenue AS (\n    SELECT\n        p.product_id,\n        p.product_category_name,\n        pc.product_category_name_english,\n        SUM(oi.price) AS revenue\n    FROM olist_order_items_dataset oi\n    JOIN olist_products_dataset p\n        ON oi.product_id = p.product_id\n    LEFT JOIN product_category_name_translation pc\n        ON p.product_category_name = pc.product_category_name\n    GROUP BY p.product_id, p.product_category_name, pc.product_category_name_english\n)\nSELECT\n    product_id,\n    product_category_name,\n    product_category_name_english,\n    revenue\nFROM (\n    SELECT\n        *,\n        ROW_NUMBER() OVER (PARTITION BY product_category_name ORDER BY revenue DESC) AS rn\n    FROM product_revenue\n) ranked\nWHERE rn <= 3\nORDER BY product_category_name, revenue DESC;",
-      "gold_sql": "WITH product_revenue AS (SELECT p.product_category_name, oi.product_id, SUM(oi.price) AS revenue FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id GROUP BY p.product_category_name, oi.product_id), ranked_products AS (SELECT product_category_name, product_id, revenue, DENSE_RANK() OVER (PARTITION BY product_category_name ORDER BY revenue DESC) AS category_rank FROM product_revenue) SELECT product_category_name, product_id, revenue, category_rank FROM ranked_products WHERE category_rank <= 3 ORDER BY product_category_name, category_rank;",
+      "difficulty": "hard",
+      "question": "Find the top 3 products by revenue within each product category. Use the original category name from the products table.",
       "passed": false,
-      "latency_seconds": 25.895,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "WITH product_rev AS (\n    SELECT\n        p.product_id,\n        p.product_category_name,\n        SUM(oi.price) AS revenue\n    FROM olist_order_items_dataset oi\n    JOIN olist_products_dataset p\n        ON oi.product_id = p.product_id\n    GROUP BY p.product_id, p.product_category_name\n)\nSELECT\n    product_category_name,\n    product_id,\n    revenue\nFROM (\n    SELECT\n        *,\n        ROW_NUMBER() OVER (PARTITION BY product_category_name ORDER BY revenue DESC) AS rn\n    FROM product_rev\n) sub\nWHERE rn <= 3\nORDER BY product_category_name, revenue DESC;",
+      "gold_sql": "WITH product_revenue AS (SELECT p.product_category_name, oi.product_id, SUM(oi.price) AS revenue FROM olist_order_items_dataset oi JOIN olist_products_dataset p ON oi.product_id = p.product_id GROUP BY p.product_category_name, oi.product_id), ranked_products AS (SELECT product_category_name, product_id, revenue, DENSE_RANK() OVER (PARTITION BY product_category_name ORDER BY revenue DESC) AS category_rank FROM product_revenue) SELECT product_category_name, product_id, revenue, category_rank FROM ranked_products WHERE category_rank <= 3 ORDER BY product_category_name, category_rank;",
+      "generated_row_count": 219,
+      "gold_row_count": 221,
+      "generated_preview": [
+        [
+          "agro_industria_e_comercio",
+          "11250b0d4b709fee92441c5f34122aed",
+          9111.0
+        ],
+        [
+          "agro_industria_e_comercio",
+          "423a6644f0aa529e8828ff1f91003690",
+          8043.0
+        ],
+        [
+          "agro_industria_e_comercio",
+          "672e757f331900b9deea127a2a7b79fd",
+          6885.0
+        ],
+        [
+          "alimentos",
+          "73326828aa5efe1ba096223de496f596",
+          4461.02
+        ],
+        [
+          "alimentos",
+          "89321f94e35fc6d7903d36f74e351d40",
+          3375.71
+        ]
+      ],
+      "gold_preview": [
+        [
+          "agro_industria_e_comercio",
+          "11250b0d4b709fee92441c5f34122aed",
+          9111.0,
+          1
+        ],
+        [
+          "agro_industria_e_comercio",
+          "423a6644f0aa529e8828ff1f91003690",
+          8043.0,
+          2
+        ],
+        [
+          "agro_industria_e_comercio",
+          "672e757f331900b9deea127a2a7b79fd",
+          6885.0,
+          3
+        ],
+        [
+          "alimentos",
+          "73326828aa5efe1ba096223de496f596",
+          4461.02,
+          1
+        ],
+        [
+          "alimentos",
+          "89321f94e35fc6d7903d36f74e351d40",
+          3375.71,
+          2
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 5.477,
+      "tokens_in": 2491,
+      "tokens_out": 466
     },
     {
       "id": "H007",
-      "question": "Calculate the cumulative monthly revenue over time.",
-      "generated_sql": "SELECT\n    month,\n    monthly_revenue,\n    SUM(monthly_revenue) OVER (ORDER BY month) AS cumulative_revenue\nFROM (\n    SELECT\n        date_trunc('month', o.order_purchase_timestamp) AS month,\n        SUM(p.payment_value) AS monthly_revenue\n    FROM olist_order_payments_dataset p\n    JOIN olist_orders_dataset o ON p.order_id = o.order_id\n    GROUP BY month\n) AS monthly_totals\nORDER BY month;",
+      "difficulty": "hard",
+      "question": "Calculate the cumulative monthly revenue over time, where revenue is the sum of item prices.",
+      "passed": true,
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT\n    date_trunc('month', o.order_purchase_timestamp) AS month,\n    SUM(oi.price) AS monthly_revenue,\n    SUM(SUM(oi.price)) OVER (ORDER BY date_trunc('month', o.order_purchase_timestamp)) AS cumulative_revenue\nFROM olist_order_items_dataset oi\nJOIN olist_orders_dataset o ON oi.order_id = o.order_id\nGROUP BY 1\nORDER BY 1;",
       "gold_sql": "WITH monthly_revenue AS (SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, SUM(oi.price) AS revenue FROM olist_orders_dataset o JOIN olist_order_items_dataset oi ON o.order_id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp)) SELECT month, revenue, SUM(revenue) OVER (ORDER BY month) AS cumulative_revenue FROM monthly_revenue ORDER BY month;",
-      "passed": false,
-      "latency_seconds": 5.959,
-      "error": null
+      "generated_row_count": 24,
+      "gold_row_count": 24,
+      "generated_preview": [
+        [
+          "2016-09-01T00:00:00",
+          267.36,
+          267.36
+        ],
+        [
+          "2016-10-01T00:00:00",
+          49507.66,
+          49775.02
+        ],
+        [
+          "2016-12-01T00:00:00",
+          10.9,
+          49785.92
+        ],
+        [
+          "2017-01-01T00:00:00",
+          120312.87,
+          170098.79
+        ],
+        [
+          "2017-02-01T00:00:00",
+          247303.02,
+          417401.81
+        ]
+      ],
+      "gold_preview": [
+        [
+          "2016-09-01T00:00:00",
+          267.36,
+          267.36
+        ],
+        [
+          "2016-10-01T00:00:00",
+          49507.66,
+          49775.02
+        ],
+        [
+          "2016-12-01T00:00:00",
+          10.9,
+          49785.92
+        ],
+        [
+          "2017-01-01T00:00:00",
+          120312.87,
+          170098.79
+        ],
+        [
+          "2017-02-01T00:00:00",
+          247303.02,
+          417401.81
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 5.833,
+      "tokens_in": 2485,
+      "tokens_out": 308
     },
     {
       "id": "H008",
+      "difficulty": "hard",
       "question": "Find orders whose payment total is greater than the average payment total per order.",
-      "generated_sql": "SELECT op.order_id,\n       SUM(op.payment_value) AS total_payment\nFROM olist_order_payments_dataset op\nGROUP BY op.order_id\nHAVING SUM(op.payment_value) > (\n    SELECT AVG(order_total)\n    FROM (\n        SELECT SUM(payment_value) AS order_total\n        FROM olist_order_payments_dataset\n        GROUP BY order_id\n    ) sub\n);",
-      "gold_sql": "WITH order_payments AS (SELECT order_id, SUM(payment_value) AS total_payment FROM olist_order_payments_dataset GROUP BY order_id) SELECT order_id, total_payment FROM order_payments WHERE total_payment > (SELECT AVG(total_payment) FROM order_payments) ORDER BY total_payment DESC;",
       "passed": true,
-      "latency_seconds": 3.717,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "WITH order_totals AS (\n    SELECT\n        order_id,\n        SUM(payment_value) AS total_payment\n    FROM olist_order_payments_dataset\n    GROUP BY order_id\n), avg_payment AS (\n    SELECT AVG(total_payment) AS avg_total\n    FROM order_totals\n)\nSELECT\n    ot.order_id,\n    ot.total_payment\nFROM order_totals ot\nCROSS JOIN avg_payment ap\nWHERE ot.total_payment > ap.avg_total;",
+      "gold_sql": "WITH order_payments AS (SELECT order_id, SUM(payment_value) AS total_payment FROM olist_order_payments_dataset GROUP BY order_id) SELECT order_id, total_payment FROM order_payments WHERE total_payment > (SELECT AVG(total_payment) FROM order_payments) ORDER BY total_payment DESC;",
+      "generated_row_count": 29272,
+      "gold_row_count": 29272,
+      "generated_preview": [
+        [
+          "00018f77f2f0320c557190d7a144bdd3",
+          259.83
+        ],
+        [
+          "000229ec398224ef6ca0657da4fc703e",
+          216.87
+        ],
+        [
+          "00042b26cf59d7ce69dfabb4e55b4fd9",
+          218.04
+        ],
+        [
+          "000576fe39319847cbb9d288c5617fa6",
+          880.75
+        ],
+        [
+          "0009c9a17f916a706d71784483a5d643",
+          650.34
+        ]
+      ],
+      "gold_preview": [
+        [
+          "03caa2c082116e1d31e67e9ae3700499",
+          13664.08
+        ],
+        [
+          "736e1922ae60d0d6a89247b851902527",
+          7274.88
+        ],
+        [
+          "0812eb902a67711a1cb742b3cdaa65ae",
+          6929.31
+        ],
+        [
+          "fefacc66af859508bf1a7934eab1e97f",
+          6922.21
+        ],
+        [
+          "f5136e38d1a14a4dbd87dff67da82701",
+          6726.66
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 5.265,
+      "tokens_in": 2483,
+      "tokens_out": 310
     },
     {
       "id": "H009",
-      "question": "For each customer, show their most recent order date and the number of orders they placed.",
-      "generated_sql": "SELECT\n    c.customer_id,\n    MAX(o.order_purchase_timestamp) AS most_recent_order_date,\n    COUNT(o.order_id) AS order_count\nFROM olist_customers_dataset AS c\nLEFT JOIN olist_orders_dataset AS o\n    ON c.customer_id = o.customer_id\nGROUP BY c.customer_id\nORDER BY c.customer_id;",
+      "difficulty": "hard",
+      "question": "For each unique customer (customer_unique_id), show their most recent order date and the number of orders they placed.",
+      "passed": true,
+      "route": null,
+      "retries": 0,
+      "generated_sql": "SELECT c.customer_unique_id,\n       MAX(o.order_purchase_timestamp) AS most_recent_order_date,\n       COUNT(o.order_id) AS order_count\nFROM olist_customers_dataset c\nJOIN olist_orders_dataset o ON c.customer_id = o.customer_id\nGROUP BY c.customer_unique_id;",
       "gold_sql": "SELECT c.customer_unique_id, MAX(o.order_purchase_timestamp) AS most_recent_order, COUNT(o.order_id) AS total_orders FROM olist_customers_dataset c JOIN olist_orders_dataset o ON c.customer_id = o.customer_id GROUP BY c.customer_unique_id ORDER BY most_recent_order DESC;",
-      "passed": false,
-      "latency_seconds": 4.922,
-      "error": null
+      "generated_row_count": 96096,
+      "gold_row_count": 96096,
+      "generated_preview": [
+        [
+          "0000366f3b9a7992bf8c76cfdf3221e2",
+          "2018-05-10T10:56:27",
+          1
+        ],
+        [
+          "0000b849f77a49e4a4ce2b2a4ca5be3f",
+          "2018-05-07T11:11:27",
+          1
+        ],
+        [
+          "0000f46a3911fa3c0805444483337064",
+          "2017-03-10T21:05:03",
+          1
+        ],
+        [
+          "0000f6ccb0745a6a4b88665a16c9f078",
+          "2017-10-12T20:29:41",
+          1
+        ],
+        [
+          "0004aac84e0df4da2b147fca70cf8255",
+          "2017-11-14T19:45:42",
+          1
+        ]
+      ],
+      "gold_preview": [
+        [
+          "87ab9fec999db8bd5774917de3cdf01c",
+          "2018-10-17T17:30:18",
+          1
+        ],
+        [
+          "262e1f1e26e92e86375f86840b4ffd63",
+          "2018-10-16T20:16:02",
+          2
+        ],
+        [
+          "af5454198a97379394cacf676e1e96cb",
+          "2018-10-03T18:55:29",
+          3
+        ],
+        [
+          "634420a0ea42302205032ed44ac7fccc",
+          "2018-10-01T15:30:09",
+          2
+        ],
+        [
+          "9bb92bebd4cb7511e1a02d5e50bc4655",
+          "2018-09-29T09:13:03",
+          1
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 22.41,
+      "tokens_in": 2491,
+      "tokens_out": 252
     },
     {
       "id": "H010",
-      "question": "Find the month-over-month change in revenue.",
-      "generated_sql": "WITH monthly_rev AS (\n    SELECT\n        date_trunc('month', o.order_purchase_timestamp)::date AS month,\n        SUM(p.payment_value) AS revenue\n    FROM olist_orders_dataset o\n    JOIN olist_order_payments_dataset p\n        ON o.order_id = p.order_id\n    GROUP BY 1\n)\nSELECT\n    month,\n    revenue,\n    revenue - LAG(revenue) OVER (ORDER BY month) AS mom_change,\n    CASE\n        WHEN LAG(revenue) OVER (ORDER BY month) = 0 THEN NULL\n        ELSE ROUND(((revenue - LAG(revenue) OVER (ORDER BY month)) / LAG(revenue) OVER (ORDER BY month)) * 100, 2)\n    END AS mom_pct_change\nFROM monthly_rev\nORDER BY month;",
-      "gold_sql": "WITH monthly_revenue AS (SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, SUM(oi.price) AS revenue FROM olist_orders_dataset o JOIN olist_order_items_dataset oi ON o.order_id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp)) SELECT month, revenue, LAG(revenue) OVER (ORDER BY month) AS previous_month_revenue, revenue - LAG(revenue) OVER (ORDER BY month) AS revenue_change FROM monthly_revenue ORDER BY month;",
+      "difficulty": "hard",
+      "question": "Find the month-over-month change in revenue, where revenue is the sum of item prices.",
       "passed": false,
-      "latency_seconds": 11.629,
-      "error": null
+      "route": null,
+      "retries": 0,
+      "generated_sql": "WITH monthly_rev AS (\n    SELECT\n        date_trunc('month', o.order_purchase_timestamp) AS month,\n        SUM(oi.price) AS revenue\n    FROM olist_orders_dataset o\n    JOIN olist_order_items_dataset oi\n        ON o.order_id = oi.order_id\n    GROUP BY date_trunc('month', o.order_purchase_timestamp)\n)\nSELECT\n    month,\n    revenue,\n    revenue - LAG(revenue) OVER (ORDER BY month) AS revenue_change\nFROM monthly_rev\nORDER BY month;",
+      "gold_sql": "WITH monthly_revenue AS (SELECT DATE_TRUNC('month', o.order_purchase_timestamp) AS month, SUM(oi.price) AS revenue FROM olist_orders_dataset o JOIN olist_order_items_dataset oi ON o.order_id = oi.order_id GROUP BY DATE_TRUNC('month', o.order_purchase_timestamp)) SELECT month, revenue, LAG(revenue) OVER (ORDER BY month) AS previous_month_revenue, revenue - LAG(revenue) OVER (ORDER BY month) AS revenue_change FROM monthly_revenue ORDER BY month;",
+      "generated_row_count": 24,
+      "gold_row_count": 24,
+      "generated_preview": [
+        [
+          "2016-09-01T00:00:00",
+          267.36,
+          null
+        ],
+        [
+          "2016-10-01T00:00:00",
+          49507.66,
+          49240.3
+        ],
+        [
+          "2016-12-01T00:00:00",
+          10.9,
+          -49496.76
+        ],
+        [
+          "2017-01-01T00:00:00",
+          120312.87,
+          120301.97
+        ],
+        [
+          "2017-02-01T00:00:00",
+          247303.02,
+          126990.15
+        ]
+      ],
+      "gold_preview": [
+        [
+          "2016-09-01T00:00:00",
+          267.36,
+          null,
+          null
+        ],
+        [
+          "2016-10-01T00:00:00",
+          49507.66,
+          267.36,
+          49240.3
+        ],
+        [
+          "2016-12-01T00:00:00",
+          10.9,
+          49507.66,
+          -49496.76
+        ],
+        [
+          "2017-01-01T00:00:00",
+          120312.87,
+          10.9,
+          120301.97
+        ],
+        [
+          "2017-02-01T00:00:00",
+          247303.02,
+          120312.87,
+          126990.15
+        ]
+      ],
+      "error": "",
+      "latency_seconds": 2.229,
+      "tokens_in": 2486,
+      "tokens_out": 377
     }
   ]
 }
