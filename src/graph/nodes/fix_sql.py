@@ -2,7 +2,7 @@
 
 from src import llm
 from src.graph.state import AgentState
-from src.utils import clean_sql, format_examples, format_schema
+from src.utils import clean_sql, format_examples, format_schema,with_memory
 
 PROMPT = """
 You are an expert PostgreSQL SQL developer.
@@ -42,7 +42,7 @@ def fix_sql_node(state: AgentState) -> AgentState:
     )
     return {
         **state,
-        "sql": clean_sql(llm.ask_llm(prompt)),
+        "sql": clean_sql(llm.ask_llm(with_memory(prompt, state))),
         "error": "",
         "retries": state.get("retries", 0) + 1,
     }

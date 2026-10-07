@@ -41,6 +41,8 @@ flowchart LR
 - **LLM:** Groq (`openai/gpt-oss-120b`) through LangChain.
 - **Safety (so far):** every query runs in a read-only transaction with a 30 s timeout. A SQL validator and a read-only DB user come in phase 6.
 
+
+
 ## Project structure
 
 ```

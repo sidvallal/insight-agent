@@ -1,11 +1,12 @@
 """Router node: classify the question."""
 
-from src import llm
+from src import llm, memory
 from src.graph.state import AgentState
 
 SQL = "SQL question"
 FOLLOW_UP = "Follow-up"
 OUT_OF_SCOPE = "Out of scope"
+MEMORY = "Memory"   # set without the LLM, when the user asks to remember something
 
 PROMPT = """
 You are a router for a Text-to-SQL data analysis agent that answers questions
@@ -21,7 +22,7 @@ Follow-up     - refers to a previous answer.
 Out of scope  - unrelated to the database or to data analysis.
                 e.g. "What is the weather today?", "Write a Python program."
 
-User message:
+{history_block}User message:
 {question}
 
 Return ONLY one of: SQL question, Follow-up, Out of scope
@@ -43,6 +44,24 @@ def parse_route(text: str) -> str:
     return SQL
 
 
+def history_block(history: list[dict]) -> str:
+    """Last few turns, so the router can recognise a follow-up."""
+    if not history:
+        return ""
+    lines = [f"- User: {turn['user_question']}\n  Answer: {turn['answer']}" for turn in history[-3:]]
+    return "Previous conversation (most recent last):\n" + "\n".join(lines) + "\n\n"
+
+
 def router_node(state: AgentState) -> AgentState:
-    answer = llm.ask_llm(PROMPT.format(question=state["question"]))
-    return {**state, "route": parse_route(answer)}
+    question = state["question"]
+    history = state.get("history", [])
+
+    if state.get("user_id") and memory.is_memory_command(question):
+        return {**state, "route": MEMORY}
+
+    answer = llm.ask_llm(PROMPT.format(question=question, history_block=history_block(history)))
+    route = parse_route(answer)
+
+    if route == FOLLOW_UP and not history:   # nothing to follow up on
+        route = SQL
+    return {**state, "route": route}

@@ -1,11 +1,14 @@
 # Core
 langgraph
+langgraph-checkpoint-postgres
+psycopg[binary]
+plotly
 langchain-groq
 chromadb
 huggingface_hub
 sqlalchemy
-# sqlglot
-# mcp>=1.9,<2
+sqlglot
+mcp>=1.9,<2
 psycopg2-binary
 pandas
 python-dotenv

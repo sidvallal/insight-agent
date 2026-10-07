@@ -83,7 +83,10 @@ class MCPDatabaseClient:
         if not payload.get("ok"):
             raise QueryFailed(payload.get("error", "Unknown error"))
         return payload["columns"], payload["rows"]
-
+    
+    def estimate_cost(self, sql: str) -> float | None:
+        return self._call("explain_query", {"sql": sql}).get("total_cost")
+    
     def close(self):
         if self._stop and self._loop.is_running():
             self._loop.call_soon_threadsafe(self._stop.set)

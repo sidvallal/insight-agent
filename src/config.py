@@ -45,6 +45,14 @@ ALLOWED_TABLES = frozenset({
     "product_category_name_translation",
 })
 
+# Phase 7: conversation, approval, cache
+CHECKPOINTER = os.getenv("CHECKPOINTER", "memory").lower()      # "memory" or "postgres"
+HISTORY_TURNS = 5                                               # previous turns kept for follow-ups
+STATE_MAX_ROWS = int(os.getenv("STATE_MAX_ROWS", "0"))          # 0 = keep every row in the graph state
+APPROVAL_COST_THRESHOLD = float(os.getenv("APPROVAL_COST_THRESHOLD", "100000"))
+CACHE_TTL_SECONDS = 3600
+CHART_MAX_POINTS = 200
+
 # How the agent reaches the database: "mcp" (through the MCP server) or "direct"
 DB_ACCESS = os.getenv("DB_ACCESS", "mcp").lower()
 

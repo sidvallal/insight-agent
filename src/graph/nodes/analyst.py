@@ -32,9 +32,11 @@ def analyst_node(state: AgentState) -> AgentState:
     result = [dict(zip(columns, row)) for row in shown]
 
     note = ""
-    if len(rows) > len(shown):
+    
+    total = state.get("row_count", len(rows))
+    if total > len(shown):
         note = (
-            f"Only the first {len(shown)} of {len(rows)} rows are shown; "
+            f"Only the first {len(shown)} of {total} rows are shown; "
             "say so if it matters for the answer."
         )
 

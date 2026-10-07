@@ -38,3 +38,10 @@ def format_examples(examples: list) -> str:
         else:
             parts.append(str(example))
     return "\n\n".join(parts)
+
+def with_memory(prompt: str, state: dict) -> str:
+    """Append the user's saved preferences to a prompt (nothing is added if there are none)."""
+    memory = state.get("memory_context")
+    if not memory:
+        return prompt
+    return f"{prompt}\nUSER PREFERENCES (follow them when relevant):\n{memory}\n"

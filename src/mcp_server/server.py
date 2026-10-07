@@ -60,6 +60,11 @@ def run_query(sql: str) -> str:
         {"ok": True, "columns": result.columns, "rows": result.rows, "truncated": result.truncated}
     )
 
+@mcp.tool()
+def explain_query(sql: str) -> str:
+    """Estimate how expensive a query is (planner cost) without running it. Returns JSON: total_cost or null."""
+    return json.dumps({"total_cost": db.estimate_cost(sql)})
+
 
 if __name__ == "__main__":
     mcp.run()  # stdio transport

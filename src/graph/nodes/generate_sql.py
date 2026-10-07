@@ -2,7 +2,7 @@
 
 from src import llm
 from src.graph.state import AgentState
-from src.utils import clean_sql, format_examples, format_schema
+from src.utils import clean_sql, format_examples, format_schema,with_memory
 
 PROMPT = """
 You are an expert PostgreSQL SQL generator.
@@ -33,4 +33,4 @@ def generate_sql_node(state: AgentState) -> AgentState:
         examples=format_examples(state.get("example_context", [])),
         question=state["question"],
     )
-    return {**state, "sql": clean_sql(llm.ask_llm(prompt))}
+    return {**state, "sql": clean_sql(llm.ask_llm(with_memory(prompt, state)))}

@@ -76,3 +76,18 @@ def run_query(sql: str) -> tuple[list[str], list[list]]:
 def run_guarded_query(sql: str, max_rows: int = config.MAX_ROWS) -> QueryResult:
     """Validate the SQL, then run it with a row cap. Raises UnsafeSQLError if rejected."""
     return execute(validate_sql(sql), max_rows=max_rows)
+
+def estimate_cost(sql: str) -> float | None:
+    """Planner's estimated total cost of a query (None if it cannot be estimated).
+
+    The SQL is validated first, then explained inside a read-only transaction.
+    EXPLAIN does not run the query.
+    """
+    try:
+        safe_sql = validate_sql(sql)
+        with get_engine().connect() as connection:
+            connection = connection.execution_options(postgresql_readonly=True)
+            plan = connection.execute(text(f"EXPLAIN (FORMAT JSON) {safe_sql}")).scalar()
+        return float(plan[0]["Plan"]["Total Cost"])
+    except Exception:
+        return None

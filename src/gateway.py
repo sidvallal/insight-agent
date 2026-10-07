@@ -16,3 +16,11 @@ def run_agent_query(sql: str) -> tuple[list[str], list[list]]:
 
     result = db.run_guarded_query(sql)
     return result.columns, result.rows
+
+def estimate_cost(sql: str) -> float | None:
+    """Estimated planner cost of agent-generated SQL (None if unknown)."""
+    if config.DB_ACCESS == "mcp":
+        from src.mcp_server.client import get_client
+
+        return get_client().estimate_cost(sql)
+    return db.estimate_cost(sql)
