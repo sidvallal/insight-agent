@@ -126,3 +126,21 @@ def test_large_result_is_truncated_for_the_llm(fake_llm, fake_retrieval, fake_db
     analyst_prompt = llm.prompts[-1]
     assert "o19" in analyst_prompt and "o20" not in analyst_prompt
     assert "first 20 of 100 rows" in analyst_prompt     # the LLM is told it is partial
+
+def test_result_cut_off_at_the_row_limit_is_flagged(fake_llm, fake_retrieval, fake_db, monkeypatch):
+    monkeypatch.setattr(config, "MAX_ROWS", 5)
+    sql = "SELECT order_id FROM olist_orders_dataset"
+    llm = fake_llm(["SQL question", sql, "Many orders."])
+    fake_db({sql: (["order_id"], [[f"o{i}"] for i in range(5)])})   # the gateway stopped at the limit
+
+    state = run()
+
+    assert state["truncated"] is True
+    assert "cut off at 5 rows" in llm.prompts[-1]
+
+
+def test_normal_result_is_not_flagged_as_cut_off(fake_llm, fake_retrieval, fake_db):
+    fake_llm(["SQL question", GOOD, "3 orders."])
+    fake_db({GOOD: (["count"], [[3]])})
+
+    assert run()["truncated"] is False

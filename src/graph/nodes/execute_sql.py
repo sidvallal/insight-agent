@@ -16,6 +16,7 @@ def execute_sql_node(state: AgentState) -> AgentState:
         return {**state, "columns": [], "rows": [], "row_count": 0, "error": str(exc)}
 
     row_count = len(rows)
+    truncated = row_count >= config.MAX_ROWS   # the gateway stops fetching at MAX_ROWS
     if config.STATE_MAX_ROWS and row_count > config.STATE_MAX_ROWS:
         rows = rows[: config.STATE_MAX_ROWS]   # keep checkpoints small
 
@@ -23,4 +24,4 @@ def execute_sql_node(state: AgentState) -> AgentState:
     if not row_count and state.get("retries", 0) == 0:
         return {**state, "columns": columns, "rows": rows, "row_count": 0, "error": EMPTY_RESULT_MESSAGE}
 
-    return {**state, "columns": columns, "rows": rows, "row_count": row_count, "error": ""}
+    return {**state, "columns": columns, "rows": rows, "row_count": row_count, "truncated": truncated, "error": ""}

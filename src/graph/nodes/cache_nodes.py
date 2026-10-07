@@ -4,7 +4,7 @@ from src import cache
 from src.graph.state import AgentState
 
 MAX_CACHED_ROWS = 5000
-FIELDS = ("sql", "columns", "rows", "row_count", "answer", "chart")
+FIELDS = ("sql", "columns", "rows", "row_count", "truncated", "answer", "chart")
 
 
 def cache_lookup_node(state: AgentState) -> AgentState:

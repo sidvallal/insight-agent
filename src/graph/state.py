@@ -22,6 +22,7 @@ class AgentState(TypedDict, total=False):
     columns: list[str]
     rows: list[list[Any]]
     row_count: int                  # real number of rows (rows may be shortened in the state)
+    truncated: bool                 # the result was cut off at the row limit
     error: str
     retries: int
     approved: bool

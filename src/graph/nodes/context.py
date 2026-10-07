@@ -15,6 +15,7 @@ def load_context_node(state: AgentState) -> AgentState:
         "columns": [],
         "rows": [],
         "row_count": 0,
+        "truncated": False,
         "error": "",
         "retries": 0,
         "approved": True,

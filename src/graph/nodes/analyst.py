@@ -5,7 +5,8 @@ from src.graph.state import AgentState
 
 PROMPT = """
 You are a data analyst. Answer the question using ONLY the SQL result below.
-Be concise. Do not invent information. {truncation_note}
+Be concise: 2 to 4 sentences with the key numbers. The user already sees the full
+result table, so do not repeat it. Do not invent information. {truncation_note}
 
 Question:
 {question}
@@ -32,12 +33,16 @@ def analyst_node(state: AgentState) -> AgentState:
     result = [dict(zip(columns, row)) for row in shown]
 
     note = ""
-    
     total = state.get("row_count", len(rows))
     if total > len(shown):
         note = (
             f"Only the first {len(shown)} of {total} rows are shown; "
             "say so if it matters for the answer."
+        )
+    if state.get("truncated"):
+        note += (
+            f" The query result was cut off at {config.MAX_ROWS:,} rows, "
+            "so the real total is larger; say so."
         )
 
     answer = llm.ask_llm(
