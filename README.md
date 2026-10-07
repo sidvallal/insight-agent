@@ -17,8 +17,8 @@ Accuracy = the generated query returns the same values as the hand-written gold 
 | Version | What changed | Accuracy (held-out 30*) |
 |---|---|---|
 | baseline | full schema in the prompt | 57% |
-| v2 | + schema retrieval + few-shot examples | 67% |
-| v3 | + LangGraph router, retry loop, analyst | 73% |
+| v2 | + schema retrieval + few-shot examples | 70% |
+| v3 | + LangGraph router, retry loop, analyst | 82% |
 
 \* These runs happened before the leakage fix: 20 benchmark questions were also in
 the few-shot store, so only the other 30 are trustworthy. Re-run
