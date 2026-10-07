@@ -14,7 +14,7 @@ LangGraph flow). Next: SQL validator, MCP server, memory, API and UI.
 Accuracy = the generated query returns the same values as the hand-written gold SQL
 (column aliases and row order are ignored).
 
-| Version | What changed | Accuracy (held-out 30*) |
+| Version | What changed | Accuracy (held-out 50*) |
 |---|---|---|
 | baseline | full schema in the prompt | 57% |
 | v2 | + schema retrieval + few-shot examples | 70% |
