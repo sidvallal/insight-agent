@@ -53,6 +53,10 @@ APPROVAL_COST_THRESHOLD = float(os.getenv("APPROVAL_COST_THRESHOLD", "100000"))
 CACHE_TTL_SECONDS = 3600
 CHART_MAX_POINTS = 200
 
+# Phase 8: API
+API_MAX_ROWS = 200                      # rows sent to the browser per result
+CORS_ORIGINS = [o.strip() for o in os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")]
+
 # How the agent reaches the database: "mcp" (through the MCP server) or "direct"
 DB_ACCESS = os.getenv("DB_ACCESS", "mcp").lower()
 
