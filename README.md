@@ -37,13 +37,13 @@ flowchart LR
     D -- ok --> A[Analyst] --> E
 ```
 
-- **Retrieval:** ChromaDB, one chunk per table plus question/SQL examples, embeddings from `all-MiniLM-L6-v2`.
+- **Retrieval:** ChromaDB, one chunk per table plus question/SQL examples, embeddings from `gemini-embedding-001`.
 - **LLM:** Groq (`openai/gpt-oss-120b`) through LangChain.
-- **Safety (so far):** every query runs in a read-only transaction with a 30 s timeout. A SQL validator and a read-only DB user come in phase 6.
+- **Safety:** every query runs in a read-only transaction with a 30 s timeout. A SQL validator and a read-only DB user come in phase 6.
 
 
 
-## Project structure
+<!-- ## Project structure
 
 ```
 src/
@@ -74,4 +74,4 @@ python -m scripts.build_index                           # build the ChromaDB ind
 python -m src.graph.builder                             # ask one question
 python -m eval.run_eval --version v3                    # full benchmark
 python -m pytest                                        # unit tests
-```
+``` -->
