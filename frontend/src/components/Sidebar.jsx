@@ -1,4 +1,7 @@
-export default function Sidebar({ history, memories, onNewChat, onPick, onClearMemory, disabled }) {
+export default function Sidebar({
+  history, memories, disabled,
+  onNewChat, onPick, onDeleteHistory, onClearHistory, onClearMemory,
+}) {
   return (
     <aside className="sidebar">
       <h1>InsightAgent</h1>
@@ -26,16 +29,28 @@ export default function Sidebar({ history, memories, onNewChat, onPick, onClearM
         {history.length === 0 ? (
           <p className="muted small">Nothing asked yet.</p>
         ) : (
-          <ul className="plain history">
-            {history.map((h) => (
-              <li key={h.id}>
-                <button type="button" className="link" onClick={() => onPick(h.question)} disabled={disabled} title="Ask again">
-                  <span className={`dot ${h.status}`} aria-hidden="true" />
-                  {h.question}
-                </button>
-              </li>
-            ))}
-          </ul>
+          <>
+            <ul className="plain history">
+              {history.map((h) => (
+                <li key={h.id}>
+                  <button type="button" className="link" onClick={() => onPick(h.question)} disabled={disabled} title="Ask again">
+                    <span className={`dot ${h.status}`} aria-hidden="true" />
+                    {h.question}
+                  </button>
+                  <button
+                    type="button"
+                    className="icon"
+                    onClick={() => onDeleteHistory(h.id)}
+                    aria-label={`Delete "${h.question}"`}
+                    title="Delete"
+                  >
+                    ×
+                  </button>
+                </li>
+              ))}
+            </ul>
+            <button type="button" className="ghost small" onClick={onClearHistory}>Clear all</button>
+          </>
         )}
       </section>
     </aside>

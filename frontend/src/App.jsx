@@ -1,5 +1,7 @@
 import { useEffect, useReducer, useRef, useState } from 'react';
-import { approve, ask, clearMemory, getHistory, getMemory } from './api.js';
+import {
+  approve, ask, clearHistory, clearMemory, deleteHistoryEntry, getHistory, getMemory,
+} from './api.js';
 import { chatReducer, hasPendingApproval, initialState } from './chatReducer.js';
 import Message from './components/Message.jsx';
 import Sidebar from './components/Sidebar.jsx';
@@ -56,6 +58,24 @@ export default function App() {
     run((onEvent) => approve(state.threadId, approved, onEvent));
   }
 
+    // Remove the item from the screen at once; if the server fails, reload the real list.
+  async function onDeleteHistory(id) {
+    setHistory((items) => items.filter((item) => item.id !== id));
+    try {
+      await deleteHistoryEntry(id);
+    } catch {
+      refreshSidebar();
+    }
+  }
+
+  async function onClearHistory() {
+    setHistory([]);
+    try {
+      await clearHistory();
+    } catch {
+      refreshSidebar();
+    }
+  }
   async function onClearMemory() {
     await clearMemory();
     refreshSidebar();
@@ -69,6 +89,8 @@ export default function App() {
         disabled={locked}
         onNewChat={() => dispatch({ type: 'reset' })}
         onPick={send}
+        onDeleteHistory={onDeleteHistory}
+        onClearHistory={onClearHistory}
         onClearMemory={onClearMemory}
       />
 

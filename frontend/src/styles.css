@@ -53,7 +53,10 @@ button:focus-visible, input:focus-visible, summary:focus-visible { outline: 2px 
 
 ul.plain { list-style: none; padding: 0; margin: 0 0 8px; }
 ul.plain li { padding: 3px 0; font-size: 0.9rem; }
+.history li { display: flex; align-items: flex-start; gap: 2px; }
 .history button { font-size: 0.88rem; }
+button.icon { border: 0; background: transparent; color: var(--muted); padding: 2px 8px; font-size: 1.1rem; line-height: 1.4; flex: none; }
+button.icon:hover { color: var(--danger); background: var(--bg); }
 .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--muted); flex: none; }
 .dot.ok { background: #2e9e5b; }
 .dot.error { background: var(--danger); }

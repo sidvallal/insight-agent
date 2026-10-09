@@ -239,3 +239,25 @@ def test_final_status_values():
 
 def test_root_points_to_the_docs_and_health(client):
     assert client.get("/").json() == {"name": "InsightAgent API", "docs": "/docs", "health": "/health"}
+
+def test_a_history_entry_can_be_deleted(client, monkeypatch):
+    deleted = []
+    monkeypatch.setattr(history, "delete_entry", lambda user, entry_id: deleted.append((user, entry_id)) or True)
+
+    response = client.delete("/history/7?user_id=alice")
+
+    assert response.json() == {"deleted": True}
+    assert deleted == [("alice", 7)]
+
+
+def test_deleting_a_missing_or_foreign_entry_gives_404(client, monkeypatch):
+    monkeypatch.setattr(history, "delete_entry", lambda user, entry_id: False)
+
+    assert client.delete("/history/999").status_code == 404
+    assert client.delete("/history/not-a-number").status_code == 422
+
+
+def test_the_whole_history_can_be_cleared(client, monkeypatch):
+    monkeypatch.setattr(history, "clear_history", lambda user: 5)
+
+    assert client.delete("/history?user_id=alice").json() == {"deleted": 5}

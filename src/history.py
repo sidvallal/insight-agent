@@ -47,3 +47,23 @@ def list_history(user_id: str, limit: int = 50) -> list[dict]:
             {"u": user_id, "n": limit},
         ).mappings().all()
     return [{**row, "created_at": row["created_at"].isoformat()} for row in rows]
+
+def delete_entry(user_id: str, entry_id: int) -> bool:
+    """Delete one entry of this user. Returns False if it does not exist (or belongs to someone else)."""
+    ensure_table()
+    with get_admin_engine().begin() as connection:
+        result = connection.execute(
+            text("DELETE FROM app.query_history WHERE id = :id AND user_id = :u"),
+            {"id": entry_id, "u": user_id},
+        )
+    return result.rowcount > 0
+
+
+def clear_history(user_id: str) -> int:
+    """Delete all entries of this user. Returns how many were removed."""
+    ensure_table()
+    with get_admin_engine().begin() as connection:
+        result = connection.execute(
+            text("DELETE FROM app.query_history WHERE user_id = :u"), {"u": user_id}
+        )
+    return result.rowcount

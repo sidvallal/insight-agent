@@ -12,9 +12,13 @@ vi.mock('../api.js', () => ({
   getHistory: vi.fn(),
   getMemory: vi.fn(),
   clearMemory: vi.fn(),
+  deleteHistoryEntry: vi.fn(),
+  clearHistory: vi.fn(),
 }));
 
-import { approve, ask, clearMemory, getHistory, getMemory } from '../api.js';
+import {
+  approve, ask, clearHistory, clearMemory, deleteHistoryEntry, getHistory, getMemory,
+} from '../api.js';
 import App from '../App.jsx';
 
 const SQL = 'SELECT order_status, COUNT(*) FROM olist_orders_dataset GROUP BY 1';
@@ -41,6 +45,8 @@ beforeEach(() => {
   getHistory.mockResolvedValue([{ id: 1, question: 'Earlier question', status: 'ok' }]);
   getMemory.mockResolvedValue(['I prefer bars']);
   clearMemory.mockResolvedValue({ cleared: true });
+  deleteHistoryEntry.mockResolvedValue({ deleted: true });
+  clearHistory.mockResolvedValue({ deleted: 2 });
 });
 
 describe('App', () => {
@@ -156,10 +162,50 @@ describe('App', () => {
     const user = userEvent.setup();
     render(<App />);
 
-    await user.click(await screen.findByRole('button', { name: /Earlier question/ }));
+    await user.click(await screen.findByRole('button', {  name: 'Earlier question' }));
     await waitFor(() => expect(ask).toHaveBeenCalledWith('Earlier question', null, expect.any(Function)));
 
     await user.click(screen.getByRole('button', { name: 'Clear preferences' }));
     expect(clearMemory).toHaveBeenCalled();
   });
 });
+  it('deletes one question from the recent list', async () => {
+    getHistory.mockResolvedValue([
+      { id: 1, question: 'First question', status: 'ok' },
+      { id: 2, question: 'Second question', status: 'ok' },
+    ]);
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(await screen.findByRole('button', { name: 'Delete "First question"' }));
+
+    expect(screen.queryByText('First question')).not.toBeInTheDocument();
+    expect(screen.getByText('Second question')).toBeInTheDocument();
+    expect(deleteHistoryEntry).toHaveBeenCalledWith(1);
+  });
+
+  it('clears the whole recent list', async () => {
+    getHistory.mockResolvedValue([
+      { id: 1, question: 'First question', status: 'ok' },
+      { id: 2, question: 'Second question', status: 'ok' },
+    ]);
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(await screen.findByRole('button', { name: 'Clear all' }));
+
+    expect(screen.queryByText('First question')).not.toBeInTheDocument();
+    expect(screen.getByText('Nothing asked yet.')).toBeInTheDocument();
+    expect(clearHistory).toHaveBeenCalled();
+  });
+
+  it('puts the list back if the server could not delete', async () => {
+    getHistory.mockResolvedValue([{ id: 1, question: 'First question', status: 'ok' }]);
+    deleteHistoryEntry.mockRejectedValue(new Error('offline'));
+    const user = userEvent.setup();
+    render(<App />);
+
+    await user.click(await screen.findByRole('button', { name: 'Delete "First question"' }));
+
+    expect(await screen.findByText('First question')).toBeInTheDocument();
+  });

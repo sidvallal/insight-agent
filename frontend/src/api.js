@@ -38,5 +38,10 @@ export const approve = (threadId, approved, onEvent) =>
   streamPost('/approve', { thread_id: threadId, approve: approved }, onEvent);
 
 export const getHistory = () => getJson(`/history?user_id=${USER_ID}`);
+
+export const deleteHistoryEntry = (id) =>
+  getJson(`/history/${id}?user_id=${USER_ID}`, { method: 'DELETE' });
+export const clearHistory = () => getJson(`/history?user_id=${USER_ID}`, { method: 'DELETE' });
+
 export const getMemory = () => getJson(`/memory?user_id=${USER_ID}`).then((d) => d.memories);
 export const clearMemory = () => getJson(`/memory?user_id=${USER_ID}`, { method: 'DELETE' });

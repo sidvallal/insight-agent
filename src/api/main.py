@@ -4,7 +4,7 @@
 
 POST /ask        stream the answer to a question (Server-Sent Events)
 POST /approve    approve or reject a query that is waiting for a decision (also streams)
-GET  /history    past questions of a user
+GET  /history    past questions of a user      DELETE /history/{id}  removes one,  DELETE /history  clears all
 GET  /memory     saved preferences of a user        DELETE /memory  clears them
 GET  /health     liveness + database check
 """
@@ -13,7 +13,7 @@ import time
 import uuid
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Query
+from fastapi import FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import StreamingResponse
 from langgraph.types import Command
@@ -105,7 +105,7 @@ def create_app(graph=None) -> FastAPI:
     @app.get("/")
     def root():
         return {"name": "InsightAgent API", "docs": "/docs", "health": "/health"}
-    
+
     @app.post("/ask")
     def ask(request: AskRequest):
         thread_id = request.thread_id or uuid.uuid4().hex[:12]
@@ -121,6 +121,16 @@ def create_app(graph=None) -> FastAPI:
     @app.get("/history")
     def get_history(user_id: str = Query("demo", max_length=64), limit: int = Query(30, le=100)):
         return history.list_history(user_id, limit)
+
+    @app.delete("/history/{entry_id}")
+    def delete_history_entry(entry_id: int, user_id: str = Query("demo", max_length=64)):
+        if not history.delete_entry(user_id, entry_id):
+            raise HTTPException(status_code=404, detail="No such history entry")
+        return {"deleted": True}
+
+    @app.delete("/history")
+    def clear_history(user_id: str = Query("demo", max_length=64)):
+        return {"deleted": history.clear_history(user_id)}
 
     @app.get("/memory")
     def get_memory(user_id: str = Query("demo", max_length=64)):
