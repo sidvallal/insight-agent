@@ -1,12 +1,12 @@
 """Retrieve the most relevant table descriptions for a question."""
 
 from src import config
-from src.embeddings import get_embedding_function
+from src.embeddings import embed_query
 from src.retrieval.store import get_client
 
 
 def retrieve_schema(question: str, k: int = config.SCHEMA_TOP_K) -> list[dict]:
-    embedding = get_embedding_function()([question])[0]
+    embedding = embed_query(question)
 
     collection = get_client().get_collection(name="schema_chunks")
     results = collection.query(query_embeddings=[embedding], n_results=k)

@@ -236,3 +236,6 @@ def test_final_status_values():
     assert final_status({"route": "Out of scope"}) == "refused"
     assert final_status({"route": "Memory"}) == "memory"
     assert final_status({"route": "SQL question", "answer": "fine"}) == "ok"
+
+def test_root_points_to_the_docs_and_health(client):
+    assert client.get("/").json() == {"name": "InsightAgent API", "docs": "/docs", "health": "/health"}

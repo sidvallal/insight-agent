@@ -21,7 +21,11 @@ RESULTS_DIR = EVAL_DIR / "results"
 
 # Models
 LLM_MODEL = os.getenv("LLM_MODEL", "openai/gpt-oss-120b")
-EMBED_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+
+# Embeddings: "gemini" (free tier of the Gemini API, default) or "hf" (Hugging Face Inference)
+EMBEDDING_BACKEND = os.getenv("EMBEDDING_BACKEND", "gemini").lower()
+GEMINI_EMBED_MODEL = os.getenv("GEMINI_EMBED_MODEL", "gemini-embedding-001")
+EMBED_DIMENSIONS = 768
 
 # Agent behaviour
 SCHEMA_TOP_K = 4

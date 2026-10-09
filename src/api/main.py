@@ -102,6 +102,10 @@ def create_app(graph=None) -> FastAPI:
         allow_methods=["*"], allow_headers=["*"],
     )
 
+    @app.get("/")
+    def root():
+        return {"name": "InsightAgent API", "docs": "/docs", "health": "/health"}
+    
     @app.post("/ask")
     def ask(request: AskRequest):
         thread_id = request.thread_id or uuid.uuid4().hex[:12]
